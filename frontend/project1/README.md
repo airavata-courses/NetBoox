@@ -1,6 +1,10 @@
 # project1
 
-> create loginpage
+The basic frontend is created for 
+
+> login page 
+> register page
+> books page
 
 ## Build Setup
 
@@ -19,5 +23,4 @@ $ npm start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
