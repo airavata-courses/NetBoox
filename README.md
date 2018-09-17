@@ -1,2 +1,2 @@
-# distributors
+# Distributors
 Team Distributors Repo

@@ -1,0 +1,39 @@
+{
+  "name": "netboox",
+  "version": "1.0.0",
+  "description": "An application which will allow the user to subscribe and read books on demand.",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
+    "graphql": "^14.0.2",
+    "mongoose": "^5.2.15"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airavata-courses/distributors.git"
+  },
+  "keywords": [
+    "On",
+    "demand",
+    "books",
+    "Science",
+    "Gateway",
+    "Architecture",
+    "IU"
+  ],
+  "author": "Sagar Panchal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/airavata-courses/distributors/issues"
+  },
+  "homepage": "https://github.com/airavata-courses/distributors#readme"
+}
