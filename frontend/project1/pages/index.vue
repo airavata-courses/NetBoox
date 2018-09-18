@@ -6,11 +6,11 @@
         Welcome NetBux
       </h1>
      <div class="form-group">
-                <label>Username</label>
+                <label>Email: </label>
                 <input type="text" v-model="username" name="username" />
             </div>
             <div class="form-group">
-                <label>Password</label>
+                <label>Password: </label>
                 <input type="password" v-model="password" name="password" />
             </div>
             <div class="form-group">
@@ -29,14 +29,14 @@ import axios from 'axios';
  export default {
   data () {
     return { 
-      username:'',
+      email:'',
       password: '',
       loginSuccessful: ''
     }
     },
     methods: {
       validate : function() {
-        if (this.username && this.password)
+        if (this.email && this.password)
         {
           // axios.post('https://httpbin.org/post',{
           //   username: this.username, 

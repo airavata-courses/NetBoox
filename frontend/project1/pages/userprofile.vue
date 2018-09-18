@@ -23,10 +23,11 @@ export default {
         readList:[]
        }
     },
-    asyncData() {  //asyncData is call before loading component
-       return axios.post('localhost:4000/graphql/',
-       {	"query": "{ getAllUserProfiles{ _id firstName phone email } }" }
-       )   //in case of params it would be http://url/$params
+    asyncData() {  
+       return axios.post('localhost:4000/graphql/',   {
+               "query": "{ getAllUserProfiles{ _id firstName phone email } }" 
+               }
+       )   
        .then((res) => {
            console.log(res)  
        })

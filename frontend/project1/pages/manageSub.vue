@@ -1,8 +1,9 @@
 <template>
 <sction>
-    <label>User Email:</label> <p>{{useremail}}</p>
-    <label>Subscription Start_Date:</label> <p>{{}}</p>
-    <label>Subscription End_Date:</label> <p>{{useremail}}</p>
+    <h1>Manage Subscription</h1>
+    <label>User Email:</label> <p>{{data.useremail}}</p>
+    <label>Subscription Start_Date:</label> <p>{{data.startDate}}</p>
+    <label>Subscription End_Date:</label> <p>{{data.endDate}}</p>
     <div>
         <button type="button" class="manageSubCancel" @click="cancelSub">Cancel</button>
     </div>
@@ -13,21 +14,21 @@
 import axios from 'axios';
 
 export default {
-    data(){
+    data(){ 
         return {
-            useremail:'',
-            startDate:'',
-            endDate:'',
-            data: []
+           data: []
+    }
     },
+    props: [ useremail ,SubscriptionValid],
+
     asyncData() {  //asyncData is call before loading component
        return axios.get('/manage_subscription/',{
                         params : {
                         email: this.useremail}
-                        })   //in case of params it would be http://url/$params
+                        })   
        .then((res) => {
          return { 
-              
+              data=res.data.value
          }
        })
        .catch(
@@ -35,6 +36,21 @@ export default {
         );
     },
     methods:{
+        cancelSub(){
+            this.SubscriptionValid="False"
+            axios.get('/manage_subscription/${params}/update',{
+                        params : {
+                        email: this.useremail,
+                        SubscriptionValid: this.SubscriptionValid }
+                        })  
+       .then((res) => {
+           console.log(res)
+       })
+       .catch(
+            (error) =>console.log(error)
+        );
+
+        }
 
     }
 }

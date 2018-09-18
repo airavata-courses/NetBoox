@@ -4,8 +4,8 @@
    <div class="header">
         <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" />
         <div class="header-buttons">
-          <button type="button" class="userProfile">My Profile</button>
-          <button type="button" class="manageSub">Manage Subscription</button>
+         <nuxt-link to="/userprofile"><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
+         <nuxt-link to="/manageSub"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
         </div>
     </div>
     <div class="content">
