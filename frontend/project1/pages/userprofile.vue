@@ -13,14 +13,22 @@ import axios from 'axios';
 
 export default {
     data(){
-        useremail:''
+       return { 
+        firstName:'',
+        lastName:'',
+        phone:'',
+        email:'',
+        subscriptionValid:'',
+        subscriptionEnds:'',
+        readList:[]
+       }
     },
     asyncData() {  //asyncData is call before loading component
-       return axios.get('localhost:4000/graphql')   //in case of params it would be http://url/$params
+       return axios.post('localhost:4000/graphql/',
+       {	"query": "{ getAllUserProfiles{ _id firstName phone email } }" }
+       )   //in case of params it would be http://url/$params
        .then((res) => {
-         return { 
-           
-         }
+           console.log(res)  
        })
        .catch(
             (error) =>console.log(error)
