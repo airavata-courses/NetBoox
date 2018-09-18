@@ -1,8 +1,10 @@
 <template>
 <section class="books">
     <article class="book">
-        <div class="thumbnail" :style="{backgroundImage: 'url(' + thumbnail + ')'}"> </div>
+        <!-- <div class="thumbnail" :style="{backgroundImage: 'url(' + thumbnail + ')'}"> </div> -->
         <h1>{{title}}</h1>
+        <p>{{author}}</p>
+        <p>{{desc}}</p>
     </article>
 
 </section>
@@ -10,7 +12,7 @@
 
 <script>
 export default{
-    props: ['thumbnail', 'title']
+    props: ['title','author','desc']
 }
 </script>
 <style scoped>

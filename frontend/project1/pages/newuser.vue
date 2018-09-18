@@ -35,26 +35,26 @@ export default {
     },
 
     method: {
-        onSubmitted() {
-            if(password_rpt == password){
-                message="";
-                //post username and password to server
-                // axios.post('http://serverurl', {
-                //     username: this.username,
-                //     password: this.password
-                //     })
-                // .then(
-                //     (response) => console.log(response)
-                // )
-                // .catch(
-                //     (error) =>console.log(error)
-                // );
-            }
-            else{
-               message="Password doesn't match";
-            }
+        // onSubmitted() {
+        //     if(password_rpt == password){
+        //         message="";
+        //        // post username and password to server
+        //         axios.post('http://serverurl', {
+        //             username: this.username,
+        //             password: this.password
+        //             })
+        //         .then(
+        //             (response) => console.log(response)
+        //         )
+        //         .catch(
+        //             (error) =>console.log(error)
+        //         );
+        //     }
+        //     else{
+        //        message="Password doesn't match";
+        //     }
             
-        }
+        // }
     }
 
 };
