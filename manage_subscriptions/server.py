@@ -21,19 +21,17 @@ def add():
     output={'email':new_data['email'],'phone':new_data['phone'],'subscriptionValid': new_data['subscriptionValid']}
     return jsonify({'result':output}),200
     
-@app.route('/manage_subscription/find/<useremail>')
-def find(useremail):
+@app.route('/manage_subscription/find/<email>')
+def find(email):
     if request.method == 'GET':
-        new_data = mongo.db.users.find_one({"email": useremail})
+        new_data = mongo.db.users.find_one({"email": email})
         output={'email':new_data['email'],'phone':new_data['phone'],'subscriptionValid': new_data['subscriptionValid']}
         return jsonify({'result': output}),200
 
 @app.route('/manage_subscription/delete/<email>', methods=['DELETE'])
 def delete(email):
-        data = request.get_json()
-        response = mongo.db.users.delete_one({"email": email})
-        return jsonify({'message': 'record deleted'}), 200
-
+         mongo.db.users.delete_one({"email": email})
+         return jsonify({'message': 'record deleted'}), 200
 
    
 if __name__ == "__main__":
