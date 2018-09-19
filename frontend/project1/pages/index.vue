@@ -7,7 +7,7 @@
       </h1>
      <div class="form-group">
                 <label>Email: </label>
-                <input type="text" v-model="username" name="username" />
+                <input type="text" v-model="email" name="email" />
             </div>
             <div class="form-group">
                 <label>Password: </label>
@@ -17,7 +17,7 @@
                 <button class="btn" @click="validate()">Login</button>
                 <nuxt-link to="/newuser"><button class="btn">Register</button></nuxt-link>
             </div>
-            <p v-if="loginSuccessful">
+            <p v-if="!loginSuccessful">
               <b>Please check if you have entered username and password</b>
             </p>
        </div>
@@ -50,7 +50,8 @@ import axios from 'axios';
           //   });
           
           this.loginSuccessful ="True";  //remove once axios comes live
-          this.$router.push("/books"); // to send post any values just add "/books"+ this.username
+         // this.$router.push("/books/");
+          this.$router.push({ name:'books', params:{email: this.email}}) // to send post any values just add "/books"+ this.username
         }
         else{
           this.loginSuccessful ="False"

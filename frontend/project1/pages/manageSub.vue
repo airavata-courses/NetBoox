@@ -1,9 +1,10 @@
 <template>
 <sction>
     <h1>Manage Subscription</h1>
-    <label>User Email:</label> <p>{{data.useremail}}</p>
-    <label>Subscription Start_Date:</label> <p>{{data.startDate}}</p>
-    <label>Subscription End_Date:</label> <p>{{data.endDate}}</p>
+    <label>User Email:</label> <p>{{sub.email}}</p>
+    <label>Phone:</label> <p>{{sub.phone}}</p>
+    <label>Subscription Start_Date:</label> <p>{{sub.startDate}}</p>
+    <label>Subscription End_Date:</label> <p>{{sub.endDate}}</p>
     <div>
         <button type="button" class="manageSubCancel" @click="cancelSub">Cancel</button>
     </div>
@@ -16,41 +17,32 @@ import axios from 'axios';
 export default {
     data(){ 
         return {
-           data: []
+           sub: []
     }
     },
-    props: [ useremail ,SubscriptionValid],
+    props: [ email],
 
-    asyncData() {  //asyncData is call before loading component
-       return axios.get('/manage_subscription/',{
-                        params : {
-                        email: this.useremail}
-                        })   
-       .then((res) => {
-         return { 
-              data=res.data.value
-         }
-       })
-       .catch(
-            (error) =>console.log(error)
-        );
+    asyncData() {  
+       return axios.get('/manage_subscription/find/',{
+        params : {email: this.email}
+        })   
+       .then((response =>this.sub =response.data)
+        )
+       .catch((error) =>console.log(error)
+       );
     },
     methods:{
-        cancelSub(){
-            this.SubscriptionValid="False"
-            axios.get('/manage_subscription/${params}/update',{
-                        params : {
-                        email: this.useremail,
-                        SubscriptionValid: this.SubscriptionValid }
-                        })  
-       .then((res) => {
-           console.log(res)
-       })
-       .catch(
-            (error) =>console.log(error)
-        );
-
-        }
+    cancelSub(){
+        this.SubscriptionValid="False"
+        axios.get('/manage_subscription/delete/',{
+        params : {email: this.email}
+        })  
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) =>console.log(error)
+       );
+    }
 
     }
 }

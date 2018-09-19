@@ -4,8 +4,9 @@
    <div class="header">
         <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" />
         <div class="header-buttons">
-         <nuxt-link to="/userprofile"><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
-         <nuxt-link to="/manageSub"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
+          <p>{{this.email}}</p>
+         <nuxt-link :to="{ name: 'userprofile', params: { email:this.email }}"><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
+         <nuxt-link :to="{ name: 'manageSub', params: { email:this.email }}"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
         </div>
     </div>
     <div class="content">
@@ -33,17 +34,18 @@ import axios from 'axios';
        books: []
      }
    }, 
-   asyncData() {  //asyncData is call before loading component
-       return axios.get('http://149.161.151.245:8080/Netbux_Microservice/netbux/getbooks/')   //in case of params it would be http://url/$params
-       .then((res) => {
-         return { 
-           books: res.data.value
-         }
-       })
-       .catch(
-            (error) =>console.log(error)
-        );
-     },
+   props:[email],
+  //  asyncData() {  //asyncData is call before loading component
+  //      return axios.get('http://149.161.151.245:8080/Netbux_Microservice/netbux/getbooks/')   //in case of params it would be http://url/$params
+  //      .then((res) => {
+  //        return { 
+  //          books: res.data.value
+  //        }
+  //      })
+  //      .catch(
+  //           (error) =>console.log(error)
+  //       );
+  //    },
     components: {
     displayBooks
      }

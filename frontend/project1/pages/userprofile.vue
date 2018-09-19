@@ -16,25 +16,39 @@ export default {
        return { 
         firstName:'',
         lastName:'',
+        useremail:'',
         phone:'',
-        email:'',
         subscriptionValid:'',
         subscriptionEnds:'',
         readList:[]
        }
     },
-    asyncData() {  
-       return axios.post('localhost:4000/graphql/',   {
-               "query": "{ getAllUserProfiles{ _id firstName phone email } }" 
-               }
-       )   
-       .then((res) => {
-           console.log(res)  
-       })
-       .catch(
-            (error) =>console.log(error)
-        );
-    },
+    props: [email],
+    // asyncData() {  
+
+    //    axios.post('localhost:4000/graphql/',   {
+    //            "query": "{ getAllUserProfiles{ _id firstName phone email } }" 
+    //            }
+    //    )   
+    //    data = JSON.stringify(data)
+    //                 $.ajax({
+    //                     type: "POST",
+    //                     //url: "http://localhost:4000/graphql",
+    //                     url: "http://389f207a.ngrok.io/graphql",
+    //                     contentType: "application/json",
+    //                     data : data,
+    //                     success : function(res) {
+    //                         var out = res
+    //                         console.log(out)
+    //                     },
+    //                 });
+    //    .then((res) => {
+    //        console.log(res)  
+    //    })
+    //    .catch(
+    //         (error) =>console.log(error)
+    //     );
+   // },
     methods:{
 
     }
