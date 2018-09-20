@@ -51,7 +51,7 @@ import axios from 'axios';
           
           this.loginSuccessful ="True";  //remove once axios comes live
          // this.$router.push("/books/");
-          this.$router.push({ name:'books', params:{email: this.email}}) // to send post any values just add "/books"+ this.username
+          this.$router.push({ name:'books', params:{email: this.email},props: true}) // to send post any values just add "/books"+ this.username
         }
         else{
           this.loginSuccessful ="False"

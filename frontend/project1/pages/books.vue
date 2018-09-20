@@ -4,15 +4,14 @@
    <div class="header">
         <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" />
         <div class="header-buttons">
-          <p>{{this.email}}</p>
-         <nuxt-link :to="{ name: 'userprofile', params: { email:this.email }}"><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
-         <nuxt-link :to="{ name: 'manageSub', params: { email:this.email }}"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
+         <nuxt-link :to="'/userprofile/'"><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
+         <nuxt-link :to="'/manageSub/' +$route.params.email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
         </div>
     </div>
     <div class="content">
       <!-- <display-books thumbnail="http://togamas.com/css/images/items/potrait/JPEG_3686.jpg" title="Think and Grow Rich">
         </display-books> -->
-      
+       <p>{{$route.params.email}}</p>
         <display-books 
         v-for= "book in books"
         :key="book.id"
@@ -29,12 +28,12 @@
 import displayBooks from "@/components/DispalyBooks.vue";
 import axios from 'axios';
  export default {
+  
    data (){
      return{
        books: []
      }
    }, 
-   props:[email],
   //  asyncData() {  //asyncData is call before loading component
   //      return axios.get('http://149.161.151.245:8080/Netbux_Microservice/netbux/getbooks/')   //in case of params it would be http://url/$params
   //      .then((res) => {

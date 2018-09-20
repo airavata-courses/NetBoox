@@ -1,6 +1,6 @@
 <template>
 <section>
-    <label>User Email:</label> <p>{{useremail}}</p>
+    <label>User Email:</label> <p>{{email}}</p>
     <label>User :</label> <p>{{useremail}}</p>
     <label>User Email:</label> <p>{{useremail}}</p>
     <label>User Email:</label> <p>{{useremail}}</p>
@@ -23,34 +23,24 @@ export default {
         readList:[]
        }
     },
-    props: [email],
-    // asyncData() {  
-
-    //    axios.post('localhost:4000/graphql/',   {
-    //            "query": "{ getAllUserProfiles{ _id firstName phone email } }" 
-    //            }
-    //    )   
-    //    data = JSON.stringify(data)
-    //                 $.ajax({
-    //                     type: "POST",
-    //                     //url: "http://localhost:4000/graphql",
-    //                     url: "http://389f207a.ngrok.io/graphql",
-    //                     contentType: "application/json",
-    //                     data : data,
-    //                     success : function(res) {
-    //                         var out = res
-    //                         console.log(out)
-    //                     },
-    //                 });
-    //    .then((res) => {
-    //        console.log(res)  
-    //    })
-    //    .catch(
-    //         (error) =>console.log(error)
-    //     );
-   // },
+    asyncData(){
+        let data = {"query": "{ getAllUserProfiles{ _id firstName phone email } }" }
+            data = JSON.stringify(data)
+            axios.post("http://389f207a.ngrok.io/graphql",{contentType: "application/json",params : data})
+            .then(res=> console.log(res))
+            .catch(error=>console.log(error))
+    },
     methods:{
-
+        // created(){
+        //     let data = {"query": "{ getAllUserProfiles{ _id firstName phone email } }" }
+        //     data = JSON.stringify(data)
+        //     axios.post("http://389f207a.ngrok.io/graphql",{contentType: "application/json",params : data})
+        //     .then(res=> console.log(res))
+        //     .catch(error=>console.log(error))
+        // }
+                    
+                
+        
     }
 }
 
