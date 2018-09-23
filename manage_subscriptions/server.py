@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import request, jsonify
 from flask_pymongo import PyMongo
+from flask_cors import CORS
 
 app=Flask(__name__)
+CORS(app)
 app.config['MONGO_DBNAME']='subscribers'
 app.config['MONGO_URI']= 'mongodb://keerthi4308:mlab4308@ds261302.mlab.com:61302/subscribers'
 mongo=PyMongo(app)
@@ -21,9 +23,8 @@ def add():
     output={'email':new_data['email'],'phone':new_data['phone'],'subscriptionValid': new_data['subscriptionValid']}
     return jsonify({'result':output}),200
     
-@app.route('/manage_subscription/find/<email>')
+@app.route('/manage_subscription/find/<email>',methods=['POST'])
 def find(email):
-    if request.method == 'GET':
         new_data = mongo.db.users.find_one({"email": email})
         output={'email':new_data['email'],'phone':new_data['phone'],'subscriptionValid': new_data['subscriptionValid']}
         return jsonify({'result': output}),200
