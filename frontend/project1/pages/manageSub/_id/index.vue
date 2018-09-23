@@ -21,7 +21,7 @@ export default {
     },
 
     asyncData() {  //u can use created() instead
-        return axios.post('http://127.0.0.1:5000/manage_subscription/find/knaredla@iu.edu')   //{body:this.params}
+        return axios.post('http://127.0.0.1:5000/manage_subscription/find/',{body: this.params})   //{body:this.params}
        .then((res) =>{
            return {sub: res.data.result}
         })

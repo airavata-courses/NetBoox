@@ -51,7 +51,7 @@ import axios from 'axios';
           
           this.loginSuccessful ="True";  //remove once axios comes live
          // this.$router.push("/books/");
-          this.$router.push({ name:'books', params:{email: this.email},props: true}) // to send post any values just add "/books"+ this.username
+          this.$router.push({ name:'books', id: this.email,props: true}) // to send post any values just add "/books"+ this.username
         }
         else{
           this.loginSuccessful ="False"
@@ -74,14 +74,13 @@ import axios from 'axios';
 }
 button {
     background-color: #4CAF50;
-    color: white;
+    height: 2%;
     padding: 14px 20px;
-    margin: 8px 0;
     cursor: pointer;
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
+  font-family: "Quicksand", "Source Sans Pro", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif; /* 1 */
   display: block;
   font-weight: 300;
   font-size: 100px;

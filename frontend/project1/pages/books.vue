@@ -4,21 +4,25 @@
    <div class="header">
         <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" />
         <div class="header-buttons">
-         <nuxt-link :to="'/userprofile/'"><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
-         <nuxt-link :to="'/manageSub/' +$route.params.email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
+         <nuxt-link :to="'/userprofile/' + id" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
+         <nuxt-link :to="'/manageSub/' +id "><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
         </div>
     </div>
     <div class="content">
       <!-- <display-books thumbnail="http://togamas.com/css/images/items/potrait/JPEG_3686.jpg" title="Think and Grow Rich">
         </display-books> -->
-       <p>{{$route.params.email}}</p>
-        <display-books 
-        v-for= "book in books"
-        :key="book.id"
-        :title="book.title"
-        :id="book.id"
-        :author="book.author.firstName"
-        :desc="book.desc" /> 
+        <!-- <p>{{$route.params.email}}</p> -->
+       <div v-for="book in books"  :key="book.id"> 
+        
+        <div  v-for="author in book.authors" :key="author.id">
+
+          <display-books  :title="book.title" :id="book.id" :desc="book.desc" :edition="book.edition" 
+                 :link="book.link" :author="author.firstName + author.lastName"></display-books>   
+
+       </div>
+    
+       </div>
+        
     </div>
     </div>
   </section>
@@ -34,17 +38,18 @@ import axios from 'axios';
        books: []
      }
    }, 
-  //  asyncData() {  //asyncData is call before loading component
-  //      return axios.get('http://149.161.151.245:8080/Netbux_Microservice/netbux/getbooks/')   //in case of params it would be http://url/$params
-  //      .then((res) => {
-  //        return { 
-  //          books: res.data.value
-  //        }
-  //      })
-  //      .catch(
-  //           (error) =>console.log(error)
-  //       );
-  //    },
+   props: ["id"],
+   asyncData() {  //asyncData is call before loading component
+       return axios.get('http://43621f3b.ngrok.io/Netbux_Microservice/netbux/getbooks/')   //in case of params it would be http://url/$params
+       .then((res) => {
+         return { 
+           books: res.data
+         }
+       })
+       .catch(
+            (error) =>console.log(error)
+        );
+     },
     components: {
     displayBooks
      }
@@ -69,7 +74,7 @@ import axios from 'axios';
   color: black;
 }
 .header-buttons {
-  align-items: flex-end;
+    float: right;
 }
 </style>
 

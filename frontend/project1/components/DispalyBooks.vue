@@ -4,7 +4,9 @@
         <!-- <div class="thumbnail" :style="{backgroundImage: 'url(' + thumbnail + ')'}"> </div> -->
         <h1>{{title}}</h1>
         <p>{{author}}</p>
+        <p>{{edition}}</p>
         <p>{{desc}}</p>
+        <p>{{link}}</p>
     </article>
 
 </section>
@@ -12,7 +14,7 @@
 
 <script>
 export default{
-    props: ['title','author','desc']
+    props: ['title','author','desc','link','edition']
 }
 </script>
 <style scoped>
