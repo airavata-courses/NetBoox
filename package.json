@@ -7,6 +7,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
+    "forever": "^0.15.3",
     "graphql": "^14.0.2",
     "mongoose": "^5.2.15"
   },
@@ -18,7 +19,8 @@
   },
   "scripts": {
     "test": "mocha test/test.js",
-    "start": "node server.js"
+    "start": "forever start server.js",
+    "stop": "forever stopall"
   },
   "repository": {
     "type": "git",
