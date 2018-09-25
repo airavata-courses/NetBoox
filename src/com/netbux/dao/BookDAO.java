@@ -72,7 +72,13 @@ public class BookDAO {
 		}
 		
 		return new Book(id, title, desc, edition, authorList, link, imageLocation);
-		
-		
 	}
+
+	public MongoClient getMongoClient() {
+		return mongoClient;
+	}
+
+	public DB getDatabase() {
+		return database;
+	}	
 }
