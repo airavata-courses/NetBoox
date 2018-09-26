@@ -25,17 +25,30 @@ def add():
     output={'firstname':new_data['firstname'],'lastname':new_data['lastname'],'email':new_data['email'],'phone':new_data['phone'],'subscriptionValid': new_data['subscriptionValid']}
     return jsonify({'result':output}),200
     
-@app.route('/manage_subscription/find/<email>')
-def find(email):
-        new_data = mongo.db.users.find_one({"email": email})
-        # output={'firstname':new_data['firstname'],'email':new_data['email'],'phone':new_data['phone'],'subscriptionValid': new_data['subscriptionValid']}
-        new_data['_id']=str(new_data['_id'])
-        return jsonify(new_data),200
-        
-@app.route('/manage_subscription/delete/<email>')
-def delete(email):
-         mongo.db.users.delete_one({"email": email})
-         return jsonify({'message': 'record deleted'}), 200
+@app.route('/manage_subscription/findOneUser/<email>')
+def findOneUser(email):
+    new_data = mongo.db.users.find_one({"email": email})
+    if new_data:
+        new_data['_id'] = str(new_data['_id'])
+        return jsonify(new_data), 200
+    else:
+        return jsonify({"message": "User Not Found"}), 200
+
+@app.route('/manage_subscription/findAllUsers')
+def findAllUsers():
+    new_data = []
+    for user in mongo.db.users.find():
+        user['_id'] = str(user['_id'])
+        new_data.append(user)
+    return jsonify(new_data), 200
+
+
+@app.route('/manage_subscription/deleteUser/<email>')
+def deleteUser(email):
+    if mongo.db.users.delete_one({"email": email}):
+        return jsonify({"message": "record deleted"}), 200
+    else:
+        return jsonify({"message": "error occured"}), 500
 
    
 if __name__ == "__main__":
