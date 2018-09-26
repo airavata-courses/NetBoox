@@ -10,7 +10,7 @@ app.config['MONGO_URI']= 'mongodb://keerthi4308:mlab4308@ds261302.mlab.com:61302
 mongo=PyMongo(app)
 users = mongo.db.users
 
-@app.route('/manage_subscription/add', methods=['POST'])
+@app.route('/manage_subscription/addUser', methods=['POST'])
 def add():
     data = request.get_json()
     structure={
