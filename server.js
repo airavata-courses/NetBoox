@@ -6,6 +6,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const express_graphql = require('express-graphql')
 const schema = require('./schema.js')
+const cors = require('cors')
 // #endregion
 
 /*
@@ -15,6 +16,7 @@ const app = express();
 app.use(express.static(__dirname))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(cors())
 
 /*
  * Generate the GraphQL server by setting its Schema and Resolver

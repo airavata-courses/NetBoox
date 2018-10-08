@@ -9,30 +9,35 @@
  */
  const schema = buildSchema (`
     type Query {
-        getUserProfile (_id: String, email: String, firstName: String, lastName: String, subscriptionValid: Boolean, 
+        getUserProfile (id: String, email: String, firstName: String, lastName: String, subscriptionValid: Boolean, 
             subscriptionEnds: String): [UserProfile] 
 
         getAllUserProfiles : [UserProfile]
+
+        verifyLogin (email: String!, password: String!): UserProfile
     },
 
     type Mutation {
-        updateUserProfile (_id: String!, firstName: String, lastName: String, email: String, phone: String, 
+        updateUserProfile (id: String!, firstName: String, lastName: String, email: String, password: String, phone: String, 
             subscriptionValid: Boolean, subscriptionEnds: String, readList: [String]): UserProfile
 
-        addUserProfile (firstName: String!, lastName: String!, phone: String, email: String!, 
+        addUserProfile (firstName: String!, lastName: String!, phone: String, email: String!, password: String!,
             subscriptionValid: Boolean!, subscriptionEnds: String!, readList: [String]): UserProfile
     },
 
     type UserProfile {
-        _id: String,
+        id: String,
         firstName: String,
         lastName: String,
         email: String!,
+        password: String,
         phone: String,
         subscriptionValid: Boolean!,
         subscriptionEnds: String!,
-        readList: [String]
-        errorMsg: String
+        readList: [String],
+        successMsg: String,
+        errorMsg: String,
+        errorFlag: Boolean
     }
  `)
 
@@ -43,7 +48,8 @@
     getUserProfile: UserProfile.getUserProfile, 
     getAllUserProfiles:UserProfile.getAllUserProfiles,
     updateUserProfile: UserProfile.updateUserProfile,
-    addUserProfile: UserProfile.addUserProfile
+    addUserProfile: UserProfile.addUserProfile,
+    verifyLogin: UserProfile.verifyLogin
  }
 
 /*

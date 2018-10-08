@@ -7,10 +7,6 @@ const mongoose = require('../connection.js').mongoose
 /*
  * Helper functions for the schema
  */
-// function toLower (data) {
-//     if (data) return data.toLowerCase();
-// }
-
 function toTitleCase(data)  {  
     if (data){
         return data.replace(/\w\S*/g, (txt) => {
@@ -59,72 +55,185 @@ const userProfileSchema = new mongoose.Schema({
     firstName: {type: String, set: toTitleCase},
     lastName: {type: String, set: toTitleCase},
     email: {type: String, required: true, unique: true, lowercase: true},
+    password: String,
+    salt: String,
     phone: {type: String, set: toPhoneNumberFormat},
     subscriptionValid: Boolean,
     subscriptionEnds:{type: Date, set: stringToDate, get: dateToString},
     readList: [{type: ObjectId, set: toObjectId, get: objectIdToString}]
 })
 
+// #region Data manipulation function
 /*
- *Generate the model from schema
- */
-const UserProfile = mongoose.model('UserProfiles', userProfileSchema)
-
-/*
- * Functions to fetch the required details from DB
- */
-const getUserProfile = async function (args) {
-    var userProfile = await UserProfile.find(args, (err) => {
-        if (err) {
-            return { 
-                errorMsg: err
-            }
-        }
-    })
-    return JSON.parse(JSON.stringify(userProfile))
-}
-
-const getAllUserProfiles = async function () {
-    var userProfile = await UserProfile.find({}, (err) => {
-        if (err) {
-            return { 
-                errorMsg: err
-            }
-        }
-    })
-    return JSON.parse(JSON.stringify(userProfile))
-}
-
-const updateUserProfile = async function(args) {
-    if (args._id){
-        var id = args._id
-        delete args._id
-        var result = await UserProfile.findByIdAndUpdate(id, args, (err) => {
-            if (err) {
-                return { 
-                    errorMsg: err
-                }
-            }
-        })
-        return JSON.parse(JSON.stringify(result))
-    }
-    return { 
-        errorMsg: "Id is required to update data"
-    }
-}
-
-const addUserProfile = async function(args) {
-    var userProfile = new UserProfile(args)
-    return JSON.parse(JSON.stringify(await userProfile.save()))
-}
-
-/*
- *Export the model
+ * Export the functions
  */
 module.exports = {
-    UserProfile,
-    getUserProfile,
-    getAllUserProfiles, 
-    updateUserProfile,
-    addUserProfile
+    /*
+    *Generate the model from schema
+    */
+    UserProfile : mongoose.model('UserProfiles', userProfileSchema),
+
+    /*
+    * Functions to fetch the required details from DB
+    */
+    getUserProfile: async function (args) {
+        var userProfile = await module.exports.UserProfile.find(args, (err) => {
+            if (err) {
+                return JSON.parse(
+                    JSON.stringify(
+                        {
+                            errorMsg: err,
+                            errorFlag: true
+                        }
+                    )
+                )
+            }
+        })
+        userProfile = JSON.parse(JSON.stringify(userProfile))
+        for (x in userProfile) {
+            userProfile[x]["id"] = userProfile[x]._id
+            userProfile[x]["errorFlag"] = false
+        }
+        return userProfile
+    },
+
+    getAllUserProfiles: async function () {
+        // await module.exports.UserProfile.remove({'firstName': 'Aakash'}, (err) => {
+        //     if (err) {
+        //         return JSON.parse(
+        //             JSON.stringify(
+        //                 {
+        //                     errorMsg: err,
+        //                     errorFlag: true
+        //                 }
+        //             )
+        //         )
+        //     }
+        // })
+        var userProfile = await module.exports.UserProfile.find({}, (err) => {
+            if (err) {
+                return JSON.parse(
+                    JSON.stringify(
+                        {
+                            errorMsg: err,
+                            errorFlag: true
+                        }
+                    )
+                )
+            }
+        })
+        userProfile = JSON.parse(JSON.stringify(userProfile))
+        for (x in userProfile) {
+            userProfile[x]["id"] = userProfile[x]._id
+            userProfile[x]["errorFlag"] = false
+        }
+        return userProfile
+    },
+
+    updateUserProfile: async function(args) {
+        if (args.id){
+            var id = args.id
+            delete args.id
+            var result = await module.exports.UserProfile.findByIdAndUpdate(id, args, (err) => {
+                if (err) {
+                    return JSON.parse(
+                        JSON.stringify(
+                            { 
+                                errorMsg: err,
+                                errorFlag: true
+                            }
+                        )
+                    )
+                }
+            })
+            if (result){
+                result = JSON.parse(JSON.stringify(result))
+                result["id"] = result._id
+                result["successMsg"] = "User data updated successfully"
+                result["errorFlag"] = false
+                return result
+            }
+            return JSON.parse(
+                JSON.stringify(
+                    { 
+                        errorMsg: "Unable to update due to user not found",
+                        errorFlag: true
+                    }
+                )
+            )
+        }
+        return JSON.parse(
+            JSON.stringify(
+                { 
+                    errorMsg: "Id is required to update data",
+                    errorFlag: true
+                }
+            )
+        )
+    },
+
+    addUserProfile: async function(args) {
+        var userProfile = new module.exports.UserProfile(args)
+        var result = await userProfile.save()
+        if (result){
+            result = JSON.parse(JSON.stringify(result))
+            result["id"] = result._id
+            result["successMsg"] = "User data saved successfully"
+            result["errorFlag"] = false
+            return result
+        }
+        return JSON.parse(
+            JSON.stringify(
+                { 
+                    errorMsg: "Unable to save data",
+                    errorFlag: true
+                }
+            )
+        )
+    },
+
+    verifyLogin: async function(args) {
+        var data = await module.exports.getUserProfile({email: args.email})
+        if (data.length == 1) {
+            // Hash the plain text password by getting the salt
+            // verify whether both the pwds match or not
+            if (1 === 1){
+                return JSON.parse(
+                    JSON.stringify(
+                        {
+                            successMsg: "User authenticated successfully",
+                            errorFlag: false
+                        }
+                    )
+                )
+            }
+            return JSON.parse(
+                JSON.stringify(
+                    {
+                        errorMsg: "Incorrect password provided",
+                        errorFlag: true
+                    }
+                )
+            )
+        }
+        else if (data.length > 1){
+            return JSON.parse(
+                JSON.stringify(
+                    { 
+                        errorMsg: "There cannot be more than one user of same email id",
+                        errorFlag: true
+                    }
+                )
+            )
+        }
+        return JSON.parse(
+            JSON.stringify(
+                {
+                    errorMsg: "User not found. Please check your email id or register yourself",
+                    errorFlag: true
+                }
+            )
+        )
+    }
 }
+// #endregion
