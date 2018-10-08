@@ -3,7 +3,7 @@
     <div>
     
       <h1 class="title">
-        Welcome NetBux
+        Welcome NetBoox
       </h1>
      <div class="form-group">
                 <label>Email: </label>
@@ -18,7 +18,7 @@
                 <nuxt-link to="/newuser"><button class="btn">Register</button></nuxt-link>
             </div>
             <p v-if="!loginSuccessful">
-              <b>Please check if you have entered username and password</b>
+              <b>{{ errorMsg }}</b>
             </p>
        </div>
   </section>
@@ -31,36 +31,61 @@ import axios from 'axios';
     return { 
       email:'',
       password: '',
-      loginSuccessful: ''
+      loginSuccessful: '',
+      errorMsg:''
     }
     },
     methods: {
       validate : function() {
         if (this.email && this.password)
         {
-          // axios.post('https://httpbin.org/post',{
-          //   username: this.username, 
-          //   password: this.password})
-          
-          // .then((res) => {
-          //           this.loginSuccessful = result.data;  //assuming if valid return true
-          //   })
-          // .catch((error) => {
-          //           console.error(error);
-          //   });
-          
-          this.loginSuccessful ="True";  //remove once axios comes live
-         // this.$router.push("/books/");
-          this.$router.push({ name:'books', id: this.email,props: true}) // to send post any values just add "/books"+ this.username
+          var data = JSON.stringify(
+            {
+              "query": `{ verifyLogin (email: "${this.email}", password: "${this.password}" ) { successMsg errorMsg errorFlag } }`
+            }
+          )
+          var headers = {
+            headers: {
+              'Content-type': 'application/json'
+            }
+          }
+          axios.post('http://localhost:4000/graphql', data, headers)
+            .then((response) => {
+              var res = response.data.data.verifyLogin
+              if (res.errorFlag){
+                this.loginSuccessful = false
+                this.errorMsg = res.errorMsg
+              }
+              else{
+                this.loginSuccessful = true
+                this.$router.push({ name:'books', params: { email: this.email } })
+              }
+            })
+            .catch((error) => {
+              if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                alert("error.response.data: " + JSON.stringify(error.response.data))
+                alert("error.response.status: " + JSON.stringify(error.response.status))
+                alert("error.response.headers: " + JSON.stringify(error.response.headers))
+              } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                alert("error.request: " + JSON.stringify(error.request))
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                alert("error.config: " + JSON.stringify(error.config))
+                alert('error.message: ' + JSON.stringify(error.message))
+              }
+            })
         }
         else{
-          this.loginSuccessful ="False"
+          this.loginSuccessful = false
+          this.errorMsg = "Please provide email and password to login"
         }
       }
-
     }
-
-
  };
 </script>
 
