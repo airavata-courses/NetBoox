@@ -1,4 +1,4 @@
-package com.netbux.tests;
+package com.netbux.dao;
 
 import static org.junit.Assert.*;
 

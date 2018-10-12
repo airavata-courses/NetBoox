@@ -19,20 +19,21 @@ public class BookDAO {
 	
 	private MongoClient mongoClient;
 	private DB database;
+	private DBCollection collection;
 	
 	public BookDAO() {
 		try {
-			mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+			this.mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		database = mongoClient.getDB("netbux");
+		this.database = mongoClient.getDB("netbux");
+		this.collection = database.getCollection("books");
 	}
 	
 	public ArrayList<Book> getBooks() {
 			
-		DBCollection collection = database.getCollection("books");
 		DBCursor cursor = collection.find();
 		ArrayList<Book> bookList = new ArrayList<>();
 	
@@ -44,6 +45,12 @@ public class BookDAO {
 		
 		return bookList;
 		
+	}
+	
+	public Book getBookById(String id) {
+		BasicDBObject query = new BasicDBObject();
+		query.put("_id", new ObjectId(id));
+		return parseDbObject(collection.findOne(query));
 	}
 	
 	public Book parseDbObject(DBObject dbObject) {
