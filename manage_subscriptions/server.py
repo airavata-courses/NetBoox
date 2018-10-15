@@ -2,6 +2,9 @@ from flask import Flask
 from flask import request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
+from bson.json_util import dumps
+import sys
+import json
 
 app=Flask(__name__)
 CORS(app)
@@ -11,7 +14,7 @@ mongo=PyMongo(app)
 users = mongo.db.users
 
 @app.route('/manage_subscription/addUser', methods=['POST'])
-def add():
+def addUser():
     data = request.get_json()
     structure={
         "firstname":data.get('firstname'),
@@ -46,14 +49,27 @@ def findAllUsers():
     return jsonify(new_data), 200
 
 
-@app.route('/manage_subscription/deleteUser/<email>')
-def deleteUser(email):
+@app.route('/manage_subscription/deleteUser', methods=['POST'])
+def deleteUser():
+    data = request.get_json()
+    print(data)
+    email = data.get('email')
     new_data = users.find_one({"email": email})
     if new_data:
-        users.delete_one({"_id": new_data['_id']})
-        return jsonify({"message": "record deleted"}), 200
+        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionvalid" : True } })
+        return jsonify(
+            {
+                "matched_count": result.matched_count,
+                "modified_count": result.modified_count,
+                "acknowledged": result.acknowledged
+            }
+        ), 200
     else:
-        return jsonify({"message": "No user record found to delete"}), 404
+        return jsonify(
+            {
+                "message": "No user record found to delete"
+            }
+        ), 404
 
    
 if __name__ == "__main__":
