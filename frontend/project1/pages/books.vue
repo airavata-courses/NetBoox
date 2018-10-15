@@ -3,6 +3,7 @@
    <div>
    <div class="header">
         <!-- <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" /> -->
+        <!-- <input type="text" class="searchbox" name="search" placeholder="Enter book to search" /> -->
         <div class="header-buttons">
          <nuxt-link :to="'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
          <nuxt-link :to="'/manageSub/' + email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
@@ -12,71 +13,65 @@
       <!-- <display-books thumbnail="http://togamas.com/css/images/items/potrait/JPEG_3686.jpg" title="Think and Grow Rich">
         </display-books> -->
         <!-- <p>{{$route.params.email}}</p> -->
-       <div v-for="book in books"  :key="book.id"> 
-        
-        <div  v-for="author in book.authors" :key="author.id">
-
-          <display-books  :title="book.title" :id="book.id" :desc="book.desc" :edition="book.edition" 
-                 :link="book.link" :author="author.firstName + author.lastName"></display-books>   
-
-       </div>
-    
-       </div>
-        
+      <DisplayBooks
+        v-for = "book in books"
+        :key="book.id"
+        :title="book.title"
+        :authors="book.authors"
+        :edition="book.edition"
+        :desc="book.desc"
+        :link="book.link"
+        :imageLocation="book.imageLocation" />
     </div>
     </div>
   </section>
 </template>
 
 <script>
-import displayBooks from "@/components/DispalyBooks.vue";
+import DisplayBooks from "@/components/DisplayBooks.vue";
 import axios from 'axios';
- export default {
 
-  data (){
+export default {
+  data () {
     return{
       email: this.$route.params.email,
       books: []
     }
   },
-  
-  //  asyncData() {  //asyncData is call before loading component
-  //     return axios.get('http://43621f3b.ngrok.io/Netbux_Microservice/netbux/getbooks/')   //in case of params it would be http://url/$params
-  //       .then((res) => {
-  //        return { 
-  //          books: res.data
-  //        }
-  //      })
-  //      .catch(
-  //           (error) =>console.log(error)
-  //       );
-  //    },
-    components: {
-    displayBooks
-     }
+
+  components: {
+    DisplayBooks
+  },
+
+  async asyncData () {
+    let response = await axios.get('http://js-169-242.jetstream-cloud.org:8080/Netbux_Microservice/netbux/getbooks/')
+    console.log(response.data)
+    return {
+      books : response.data
+    }
+  }
  };
 </script>
 
 <style>
+  .header { 
+    width: 100%;
+    height: 50px;
+    background-color: cornflowerblue;
+  }
 
-.header {
- 
-  width: 100%;
-  height: 50px;
-  background-color: cornflowerblue;
-}
-.searchbox {
+  .searchbox {
+    width: 40%;
+    margin-top: 10px;
+    margin-left: 350px;
+    font-weight: 30;
+    font-size: 18px;
+    color: black;
+  }
 
-  width: 40%;
-  margin-top: 10px;
-  margin-left: 350px;
-  font-weight: 30;
-  font-size: 18px;
-  color: black;
-}
-.header-buttons {
-    float: right;
-}
+  .header-buttons {
+      float: right;
+  }
 </style>
 
 

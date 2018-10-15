@@ -44,12 +44,6 @@ export default {
                     lastName: res.lastName,
                     email: res.email,
                     phone: res.phone,
-                    // subscriptionValid: res[0].subscriptionValid,
-                    // subscriptionEnds: new Date(res.subscriptionEnds).toLocaleDateString('en-GB', {
-                    //     day: 'numeric',
-                    //     month: 'short',
-                    //     year: 'numeric'
-                    // }),
                     subscriptionEnds: res.subscriptionEnds,
                     readList: res.readList,
                     errorFlag: res.errorFlag

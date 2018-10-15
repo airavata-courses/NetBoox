@@ -10,10 +10,6 @@
             :phone="sub.phone"
             :subStartDate="sub.startDate"
             :subEndDate="sub.endDate" />
-
-        <div>
-            <button type="button" class="manageSubCancel" @click="cancelSub">Cancel</button>
-        </div>
     </section> -->
 
 <section>
