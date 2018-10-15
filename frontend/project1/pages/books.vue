@@ -32,8 +32,6 @@
 import displayBooks from "@/components/DispalyBooks.vue";
 import axios from 'axios';
  export default {
-  
-  // props: ['id'],
 
   data (){
     return{

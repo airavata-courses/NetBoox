@@ -1,51 +1,81 @@
 <template>
+    <!-- <section>
+        <h1>Manage Subscription</h1>
+        <ManageUserSubscription
+            v-for = "sub in subscriptions"
+            :key="sub.id"
+            :firstName="sub.firstname"
+            :lastName="sub.lastname"
+            :email="sub.email"
+            :phone="sub.phone"
+            :subStartDate="sub.startDate"
+            :subEndDate="sub.endDate" />
+
+        <div>
+            <button type="button" class="manageSubCancel" @click="cancelSub">Cancel</button>
+        </div>
+    </section> -->
+
 <section>
     <h1>Manage Subscription</h1>
-    <label>User Email:</label> <p>{{sub.email}}</p>
-    <label>Phone:</label> <p>{{sub.phone}}</p>
-    <label>Subscription Start_Date:</label> <p>{{sub.startDate}}</p>
-    <label>Subscription End_Date:</label> <p>{{sub.endDate}}</p>
+    <label>First Name:</label> <p>{{ user_subscription_data.firstname }}</p>
+    <label>Last Name:</label> <p>{{ user_subscription_data.lastname }}</p>
+    <label>User Email:</label> <p>{{user_subscription_data.email}}</p>
+    <label>Phone:</label> <p>{{user_subscription_data.phone}}</p>
+    <label>Subscription Valid:</label> <p>{{user_subscription_data.subscriptionvalid}}</p>
+    <label>Subscription Start_Date:</label> <p>{{user_subscription_data.startDate}}</p>
+    <label>Subscription End_Date:</label> <p>{{user_subscription_data.endDate}}</p>
     <div>
-        <button type="button" class="manageSubCancel" @click="cancelSub">Cancel</button>
+        <button type="button" class="manageSubCancel" @click="cancelSub(user_subscription_data.email)">Cancel</button>
     </div>
 </section>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
+
 export default {
-    data(){ 
+
+    data() {
         return {
-           sub: []
-           }
+            headers: {"Content-type": "application/json"},
+            url: "http://127.0.0.1:5000/manage_subscription/",
+        }
     },
 
-    asyncData() {  //u can use created() instead
-        return axios.post('http://127.0.0.1:5000/manage_subscription/find/',{body: this.params})   //{body:this.params}
-       .then((res) =>{
-           return {sub: res.data.result}
-        })
-       .catch((error) =>console.log(error)
-       );
+        
+    async asyncData( context ) {
+        let url = 'http://127.0.0.1:5000/manage_subscription/'
+
+        try {
+            let response = await axios.get(url + `findOneUser/${ context.params.id }`)
+            let user_subscription_data = response.data
+            return {
+                user_subscription_data
+            }
+        }
+        catch (error) {
+            console.log("Error: ", error)
+        }
     },
+
     methods:{
-        // created () {
-        //     axios.get('http://')
-        //     .then(res => console.log(res))
-        //     .catch(error =>console.log(error))
-        // },
-    cancelSub(){
-        this.SubscriptionValid="False"
-        axios.get('/manage_subscription/delete/',{
-        params : {email: $route.params.email}
-        })  
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((error) =>console.log(error)
-       );
-    }
+        async cancelSub(email){
+            let params = {
+                email: email
+            }
 
+            try{
+                let response = await axios.post(this.url + 'deleteUser', params, this.headers )
+                console.log(response)
+                if (response.data.acknowledged && response.data.modified_count == 1){
+                    // Go to login page as the subscription has ended and the user must be logged out. - Keerthi
+                }
+            }
+            catch(error) {
+                console.log("Error: ", error)
+            }
+        }
     }
 }
 </script>

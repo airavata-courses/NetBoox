@@ -39,17 +39,19 @@ import axios from 'axios';
       validate : function() {
         if (this.email && this.password)
         {
-          var data = JSON.stringify(
+          let url = 'http://localhost:4000/graphql'
+
+          let query = JSON.stringify(
             {
               "query": `{ verifyLogin (email: "${this.email}", password: "${this.password}" ) { successMsg errorMsg errorFlag } }`
             }
           )
-          var headers = {
+          let headers = {
             headers: {
               'Content-type': 'application/json'
             }
           }
-          axios.post('http://localhost:4000/graphql', data, headers)
+          axios.post(url, query, headers)
             .then((response) => {
               var res = response.data.data.verifyLogin
               if (res.errorFlag){
