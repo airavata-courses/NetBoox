@@ -30,6 +30,6 @@ app.use('/graphql', express_graphql({
 /*
  * Start the server
  */
-const server = app.listen(4001, () => {
+const server = app.listen(4000, () => {
     console.log(`Express Graphql Server now running on localhost:${server.address().port}/graphql`)
 })
