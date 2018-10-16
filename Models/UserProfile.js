@@ -2,6 +2,7 @@
  * Get the required libraries
  */
 const mongoose = require('../connection.js').mongoose
+const crypto = require('crypto')
 
 // #region Helper functions
 /*
@@ -44,6 +45,37 @@ function stringToDate (data) {
 function dateToString (data) {
     if (data) return data.toString()
 }
+/**
+ * generates random string of characters i.e salt
+ * @function
+ * @param {number} length - Length of the random string.
+ */
+function genRandomString (length){
+    return crypto.randomBytes(Math.ceil(length/2))
+        .toString('hex') /** convert to hexadecimal format */
+        .slice(0,length);   /** return required number of characters */
+}
+/**
+ * hash password with sha512.
+ * @function
+ * @param {string} password - List of required fields.
+ * @param {string} salt - Data to be validated.
+ */
+function sha512 (password, salt){
+    var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+    hash.update(password);
+    var value = hash.digest('hex');
+    return {
+        salt:salt,
+        password:value
+    }
+}
+
+function saltHashPassword(userpassword, salt) {
+    if (!salt)
+        salt = genRandomString(16); /** Gives us salt of length 16 */
+    return sha512(userpassword, salt);
+}
 // #endregion
 
 /*
@@ -69,7 +101,7 @@ const userProfileSchema = new mongoose.Schema({
  */
 module.exports = {
     /*
-    *Generate the model from schema
+    * Generate the model from schema
     */
     UserProfile : mongoose.model('UserProfiles', userProfileSchema),
 
@@ -133,8 +165,30 @@ module.exports = {
     updateUserProfile: async function(args) {
         if (args.id){
             var id = args.id
-            delete args.id
-            var result = await module.exports.UserProfile.findByIdAndUpdate(id, args, (err) => {
+            delete args.id // Removed id from args as args will be used to update other fields
+            if (args.password) {
+                // If user requested to update the password, then first get the salt and then hash the new password with it and then update
+                var userProfile = await module.exports.UserProfile.findById(id, (err) => {
+                    if (err) {
+                        return JSON.parse(
+                            JSON.stringify(
+                                { 
+                                    errorMsg: err,
+                                    errorFlag: true
+                                }
+                            )
+                        )
+                    }    
+                })
+                if(userProfile){
+                    var hashedPassword = saltHashPassword(args.password, userProfile.salt)
+                    args.password = hashedPassword.password
+                }
+            }
+            // Options = new : true is to send the updated document of the user rather then the old one
+            var options = { new: true }
+            // Finally update the data
+            var result = await module.exports.UserProfile.findByIdAndUpdate(id, args, options, (err) => {
                 if (err) {
                     return JSON.parse(
                         JSON.stringify(
@@ -173,6 +227,9 @@ module.exports = {
     },
 
     addUserProfile: async function(args) {
+        var hashedPassword = saltHashPassword(args.password)
+        args.password = hashedPassword.password
+        args.salt = hashedPassword.salt
         var userProfile = new module.exports.UserProfile(args)
         var result = await userProfile.save()
         if (result){
@@ -193,11 +250,10 @@ module.exports = {
     },
 
     verifyLogin: async function(args) {
-        var data = await module.exports.getUserProfile({email: args.email})
-        if (data.length == 1) {
-            // Hash the plain text password by getting the salt
-            // verify whether both the pwds match or not
-            if (1 === 1){
+        var userProfile = await module.exports.getUserProfile({email: args.email})
+        if (userProfile.length == 1) {
+            var hashedPassword = saltHashPassword(args.password, userProfile[0].salt)
+            if (hashedPassword.password === userProfile[0].password){
                 return JSON.parse(
                     JSON.stringify(
                         {
