@@ -1,6 +1,5 @@
 package com.netbux.dao;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
@@ -11,7 +10,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.netbux.pojos.Author;
 import com.netbux.pojos.Book;
 
@@ -22,13 +20,9 @@ public class BookDAO {
 	private DBCollection collection;
 	
 	public BookDAO() {
-		try {
-			this.mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.database = mongoClient.getDB("netbux");
+		DbConnection dbConnection = DbConnection.getInstance();
+		this.mongoClient = dbConnection.getMongoClient();
+		this.database = dbConnection.getDatabase();
 		this.collection = database.getCollection("books");
 	}
 	
@@ -42,7 +36,7 @@ public class BookDAO {
 			Book book = parseDbObject(dbObject);
 			bookList.add(book);
 		}
-		
+		cursor.close();
 		return bookList;
 		
 	}
@@ -80,7 +74,9 @@ public class BookDAO {
 		
 		return new Book(id, title, desc, edition, authorList, link, imageLocation);
 	}
-
+	
+	
+	
 	public MongoClient getMongoClient() {
 		return mongoClient;
 	}

@@ -12,10 +12,11 @@ import javax.ws.rs.core.Response;
 import com.netbux.dao.BookDAO;
 import com.netbux.pojos.Book;
 
-@Path("/getbooks")
-public class GetBooks {
+@Path("/books")
+public class BookServices {
 	
 	@GET
+	@Path("/getBooks")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBooks() {
 			BookDAO dao = new BookDAO();
