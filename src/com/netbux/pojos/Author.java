@@ -7,12 +7,14 @@ public class Author {
 	private String id;
 	private String firstName;
 	private String lastName;
+	private String gender;
 	
-	public Author(String id, String firstName, String lastName) {
+	public Author(String id, String firstName, String lastName, String gender) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.gender = gender;
 	}
 
 	public String getId() {
@@ -33,5 +35,12 @@ public class Author {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
 	
 }

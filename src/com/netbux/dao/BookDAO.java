@@ -67,15 +67,14 @@ public class BookDAO {
 		    
 		    String firstName = (String) dbObj.get("firstName");
 		    String lastName = (String) dbObj.get("lastName");
+		    String gender = (String) dbObj.get("gender");
 		    
-		    Author author = new Author(ids, firstName, lastName);
+		    Author author = new Author(ids, firstName, lastName, gender);
 		    authorList.add(author);
 		}
 		
 		return new Book(id, title, desc, edition, authorList, link, imageLocation);
-	}
-	
-	
+	}	
 	
 	public MongoClient getMongoClient() {
 		return mongoClient;
