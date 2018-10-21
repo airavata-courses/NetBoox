@@ -253,7 +253,7 @@ module.exports = {
         var userProfile = await module.exports.getUserProfile({email: args.email})
         if (userProfile.length == 1) {
             var hashedPassword = saltHashPassword(args.password, userProfile[0].salt)
-            if (hashedPassword.password === userProfile[0].password){
+            if (hashedPassword.password === userProfile[0].password && userProfile[0].subscriptionValid){
                 return JSON.parse(
                     JSON.stringify(
                         {
