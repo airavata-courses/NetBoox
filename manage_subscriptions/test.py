@@ -32,9 +32,9 @@ else:
 delete_data = {
     "email": "knaredla@iu.edu"
 }
-response = requests.post("http://127.0.0.1:5000/manage_subscription/deleteUser", json.dumps(delete_data), headers=headers)
+response = requests.post("http://127.0.0.1:5000/manage_subscription/cancelSubscription", json.dumps(delete_data), headers=headers)
 if(response.status_code==200):
-    print("User Deleted")
+    print("Subscription cancelled")
     print(response.content)
 else:
     print("Error occured: ", response.content)

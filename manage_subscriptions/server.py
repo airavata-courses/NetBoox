@@ -49,14 +49,14 @@ def findAllUsers():
     return jsonify(new_data), 200
 
 
-@app.route('/manage_subscription/deleteUser', methods=['POST'])
+@app.route('/manage_subscription/cancelSubscription', methods=['POST'])
 def deleteUser():
     data = request.get_json()
     print(data)
     email = data.get('email')
     new_data = users.find_one({"email": email})
     if new_data:
-        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionvalid" : True } })
+        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionvalid" : False } })
         return jsonify(
             {
                 "matched_count": result.matched_count,
@@ -73,4 +73,4 @@ def deleteUser():
 
    
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=4001)
