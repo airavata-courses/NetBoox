@@ -180,9 +180,13 @@ module.exports = {
                         )
                     }    
                 })
-                if(userProfile){
+                if(userProfile.salt){
                     var hashedPassword = saltHashPassword(args.password, userProfile.salt)
                     args.password = hashedPassword.password
+                }else {
+                    var hashedPassword = saltHashPassword(args.password)
+                    args.password = hashedPassword.password
+                    args.salt = hashedPassword.salt
                 }
             }
             // Options = new : true is to send the updated document of the user rather then the old one
