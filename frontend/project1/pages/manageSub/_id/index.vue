@@ -62,7 +62,7 @@ export default {
             }
 
             try{
-                let response = await axios.post(this.url + 'deleteUser', params, this.headers )
+                let response = await axios.post(this.url + 'cancelSubscription', params, this.headers )
                 console.log(response)
                 if (response.data.acknowledged && response.data.modified_count == 1){
                     // Go to login page as the subscription has ended and the user must be logged out. - Keerthi

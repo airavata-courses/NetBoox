@@ -45,7 +45,6 @@ export default {
 
   async asyncData () {
     let response = await axios.get('http://js-169-242.jetstream-cloud.org:8080/Netbux_Microservice/netbux/getbooks/')
-    console.log(response.data)
     return {
       books : response.data
     }
