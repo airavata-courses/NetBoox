@@ -54,7 +54,7 @@ def findAllUsers():
     return jsonify(new_data), 200
 
 
-@app.route('/manage_subscription/deleteUser', methods=['POST'])
+@app.route('/manage_subscription/cancelSubscription', methods=['POST'])
 def deleteUser():
     data = request.get_json()
     print(data)
@@ -83,4 +83,4 @@ def deleteUser():
 
    
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=4002)
