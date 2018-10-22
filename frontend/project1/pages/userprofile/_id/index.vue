@@ -19,7 +19,7 @@ import axios from 'axios';
 export default {
     async asyncData( context ){
 
-        let url = 'http://localhost:4000/graphql'
+        let url = 'http://localhost:4001/graphql'
 
         let data = JSON.stringify(
             {

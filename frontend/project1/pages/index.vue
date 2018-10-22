@@ -39,7 +39,7 @@ import axios from 'axios';
       validate : function() {
         if (this.email && this.password)
         {
-          let url = 'http://localhost:4000/graphql'
+          let url = 'http://localhost:4001/graphql'
 
           let query = JSON.stringify(
             {

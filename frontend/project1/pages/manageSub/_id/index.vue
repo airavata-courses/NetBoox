@@ -35,13 +35,13 @@ export default {
     data() {
         return {
             headers: {"Content-type": "application/json"},
-            url: "http://127.0.0.1:5000/manage_subscription/",
+            url: "http://127.0.0.1:4002/manage_subscription/",
         }
     },
 
         
     async asyncData( context ) {
-        let url = 'http://127.0.0.1:5000/manage_subscription/'
+        let url = 'http://127.0.0.1:4002/manage_subscription/'
 
         try {
             let response = await axios.get(url + `findOneUser/${ context.params.id }`)

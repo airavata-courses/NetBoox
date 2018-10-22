@@ -4,6 +4,12 @@
   "description": "create loginpage",
   "author": "knaredla",
   "private": true,
+  "config": {
+    "nuxt":{
+      "host":"0.0.0.0",
+      "port":"4000"
+    }
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
