@@ -3,6 +3,8 @@ from flask import request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from bson.json_util import dumps
+from kafka import KafkaProducer
+from bson.json_util import dumps
 import sys
 import json
 
@@ -12,6 +14,9 @@ app.config['MONGO_DBNAME']='subscribers'
 app.config['MONGO_URI']= 'mongodb://keerthi4308:mlab4308@ds261302.mlab.com:61302/subscribers'
 mongo=PyMongo(app)
 users = mongo.db.users
+
+#producer related stuff
+producer =KafkaProducer(bootstrap_servers=['localhost:9092'],value_serializer=lambda m:json.dumps(m).encode('ascii'))
 
 @app.route('/manage_subscription/addUser', methods=['POST'])
 def addUser():
@@ -56,7 +61,12 @@ def deleteUser():
     email = data.get('email')
     new_data = users.find_one({"email": email})
     if new_data:
-        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionvalid" : True } })
+        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionvalid" : False } })
+        #producer send
+        mongoid=dumps(new_data['_id'])
+        send_msg={'_id': mongoid, 'subscriptionvalid' : False}
+        res=producer.send('posts',value=send_msg)
+        print(res)
         return jsonify(
             {
                 "matched_count": result.matched_count,
