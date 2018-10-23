@@ -4,13 +4,15 @@
   "description": "An application which will allow the user to subscribe and read books on demand.",
   "main": "server.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "crypto": "^1.0.1",
-    "express": "^4.16.3",
+    "express": "^4.16.4",
     "express-graphql": "^0.6.12",
     "forever": "^0.15.3",
     "graphql": "^14.0.2",
+    "kafka-node": "^3.0.1",
     "mongoose": "^5.2.15"
   },
   "devDependencies": {

@@ -3,7 +3,7 @@
  */
 const mongoose = require('../connection.js').mongoose
 const crypto = require('crypto')
-
+const axios = require('axios')
 // #region Helper functions
 /*
  * Helper functions for the schema
@@ -188,6 +188,9 @@ module.exports = {
                     args.password = hashedPassword.password
                     args.salt = hashedPassword.salt
                 }
+                if(args.subscriptionValid){
+                    
+                }
             }
             // Options = new : true is to send the updated document of the user rather then the old one
             var options = { new: true }
@@ -241,6 +244,15 @@ module.exports = {
             result["id"] = result._id
             result["successMsg"] = "User data saved successfully"
             result["errorFlag"] = false
+            var payload = {
+                topic: 'addSubscriptionProfile',
+                data: {
+                    userProfileId: result.id,
+                    email: result.email,
+                    subscriptionValid: result.subscriptionValid
+                }
+            }
+            axios.post("http://localhost:4004/kafkaproducer", payload)
             return result
         }
         return JSON.parse(
