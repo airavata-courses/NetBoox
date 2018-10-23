@@ -14,7 +14,7 @@ public class DbConnection {
 	
 	private DbConnection() {
 		try {
-			this.mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+			this.mongoClient = new MongoClient(new MongoClientURI("mongodb://149.165.169.216:27017"));
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
