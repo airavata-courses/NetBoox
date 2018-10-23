@@ -1,7 +1,7 @@
 #dependencies
 bin
 config
-lib
+libs
 logs
 node_modules
 site-docs
