@@ -3,21 +3,24 @@ package com.netbux.zookeeper;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 
 import com.netbux.pojos.InstanceDetails;
+import com.netbux.pojos.ZookeeperClient;
 
 public class InitiateServiceRegistry implements ServletContextListener {
 
 	private CuratorFramework client;
+	private Registrar getBooks;
+	private Registrar getBookById;
+	private Registrar getAuthors;
+	private Registrar getAuthorById;
+	private ZookeeperClient zookeeperClient;
 	
 	@Override
 	public void contextInitialized(ServletContextEvent s) {
-		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-		client = CuratorFrameworkFactory.newClient("149.165.170.59", retryPolicy);
+		zookeeperClient = ZookeeperClient.getInstance();
+		client = zookeeperClient.getClient();
 		client.start();
 		
 		InstanceDetails getBooksInstance = new InstanceDetails();
@@ -34,16 +37,16 @@ public class InitiateServiceRegistry implements ServletContextListener {
 		getAuthorByIdInstance.setDescription("returns an author by his id");
 		getAuthorByIdInstance.setVersion("1.0");
 		
-		Zookeeper getBooks = new Zookeeper(client, "getBooks", getBooksInstance);
+		getBooks = new Registrar(client, "getBooks", getBooksInstance, "books");
 		getBooks.registerService();
 		
-		Zookeeper getBookById = new Zookeeper(client, "getBookById", getBookByIdInstance);
+		getBookById = new Registrar(client, "getBookById", getBookByIdInstance, "books");
 		getBookById.registerService();
 		
-		Zookeeper getAuthors = new Zookeeper(client, "getAuthors", getAuthorsInstance);
+		getAuthors = new Registrar(client, "getAuthors", getAuthorsInstance, "authors");
 		getAuthors.registerService();
 		
-		Zookeeper getAuthorById = new Zookeeper(client, "getAuthorById", getAuthorByIdInstance);
+		getAuthorById = new Registrar(client, "getAuthorById", getAuthorByIdInstance, "authors");
 		getAuthorById.registerService();
 		
 	}
@@ -51,6 +54,10 @@ public class InitiateServiceRegistry implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		client.close();
+		getBooks.close();
+		getBookById.close();
+		getAuthors.close();
+		getAuthorById.close();
 	}
 	
 }

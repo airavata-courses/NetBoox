@@ -2,7 +2,19 @@ package com.netbux.dao;
 
 import java.util.ArrayList;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+
+import org.apache.curator.x.discovery.ServiceInstance;
 import org.bson.types.ObjectId;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
+import org.json.JSONObject;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -12,6 +24,10 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.netbux.pojos.Author;
 import com.netbux.pojos.Book;
+import com.netbux.pojos.InstanceDetails;
+import com.netbux.pojos.ZookeeperClient;
+import com.netbux.zookeeper.ServiceDiscoverer;
+import com.netbux.dao.DbConnection;
 
 public class BookDAO {
 	
@@ -61,16 +77,27 @@ public class BookDAO {
 		ArrayList<Author> authorList = new ArrayList<Author>();
 		
 		for (String ids : authors) {
-			BasicDBObject query = new BasicDBObject();
-		    query.put("_id", new ObjectId(ids));
-		    DBObject dbObj = collection.findOne(query);
+
+			ServiceDiscoverer discoverer = new ServiceDiscoverer("getAuthorById", "authors");
+			discoverer.start();
+			ClientConfig config = new ClientConfig();
+			Client getAuthorById = ClientBuilder.newClient(config.register(LoggingFilter.class));
+			
+			ServiceInstance<InstanceDetails> authorInstance = discoverer.getServiceUrl();
+			
+			WebTarget webTarget = getAuthorById.target(UriBuilder.fromUri(authorInstance.buildUriSpec()).path(ZookeeperClient.BASE_PATH + "authors/getAuthorById").path(ids).build());
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+			Response response = invocationBuilder.get();
+			
+		    JSONObject responseJson = new JSONObject(response.readEntity(String.class));
+			String authorId = responseJson.getString("id");
+			String firstName = responseJson.getString("firstName");
+			String lastName = responseJson.getString("lastName");
+			String gender = responseJson.getString("gender");
+			Author author = new Author(authorId, firstName, lastName, gender);
 		    
-		    String firstName = (String) dbObj.get("firstName");
-		    String lastName = (String) dbObj.get("lastName");
-		    String gender = (String) dbObj.get("gender");
-		    
-		    Author author = new Author(ids, firstName, lastName, gender);
 		    authorList.add(author);
+		    discoverer.close();
 		}
 		
 		return new Book(id, title, desc, edition, authorList, link, imageLocation);

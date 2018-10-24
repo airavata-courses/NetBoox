@@ -1,6 +1,7 @@
 package com.netbux.zookeeper;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -12,17 +13,20 @@ import org.apache.curator.x.discovery.UriSpec;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
 import com.netbux.pojos.InstanceDetails;
+import com.netbux.pojos.ZookeeperClient;
 
-public class Zookeeper {
+public class Registrar {
 	private ServiceDiscovery<InstanceDetails> serviceDiscovery;
 	private CuratorFramework client;
 	private JsonInstanceSerializer<InstanceDetails> serializer;
 	private ServiceInstance<InstanceDetails> thisInstance;
 	private String serviceName;
+	private String serviceBase;
 	
-	public Zookeeper(CuratorFramework client, String serviceName, InstanceDetails serviceInstance) {
+	public Registrar(CuratorFramework client, String serviceName, InstanceDetails serviceInstance, String serviceBase) {
 		this.serviceName = serviceName;
 		this.client = client;
+		this.serviceBase = serviceBase;
 		
 		serializer = new JsonInstanceSerializer<>(InstanceDetails.class);
 		UriSpec uriSpec = new UriSpec("{scheme}://{address}:{port}");
@@ -37,7 +41,6 @@ public class Zookeeper {
 							.address(ip)
 							.payload(serviceInstance).port(8080) 
 							.build();
-			registerService();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,8 +50,9 @@ public class Zookeeper {
 	public void registerService() {
 		serviceDiscovery = ServiceDiscoveryBuilder.builder(InstanceDetails.class)
 		.client(client)
-		.basePath("/Netbux_Microservice/netbux/books").serializer(serializer).thisInstance(thisInstance)
+		.basePath(ZookeeperClient.BASE_PATH + serviceBase).serializer(serializer).thisInstance(thisInstance)
 		.build();
+		
 		try {
 			serviceDiscovery.start();
 		} catch (Exception e) {
@@ -56,4 +60,18 @@ public class Zookeeper {
 			e.printStackTrace();
 		} 
 	}
+	
+	public void close() {
+		try {
+			serviceDiscovery.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public ServiceDiscovery<InstanceDetails> getServiceDiscovery() {
+		return serviceDiscovery;
+	}
+
 }
