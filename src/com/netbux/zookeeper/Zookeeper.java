@@ -1,6 +1,8 @@
 package com.netbux.zookeeper;
 
-import java.net.InetAddress;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.x.discovery.ServiceDiscovery;
@@ -26,10 +28,13 @@ public class Zookeeper {
 		UriSpec uriSpec = new UriSpec("{scheme}://{address}:{port}");
 		
 		try {
-			InetAddress localhost = InetAddress.getLocalHost(); 
+			URL whatismyip = new URL("http://checkip.amazonaws.com");
+			BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
+			String ip = in.readLine();
+			
 			thisInstance = ServiceInstance.<InstanceDetails>builder().name(this.serviceName)
 							.uriSpec(uriSpec)
-							.address(localhost.getHostAddress().trim())
+							.address(ip)
 							.payload(serviceInstance).port(8080) 
 							.build();
 			registerService();
