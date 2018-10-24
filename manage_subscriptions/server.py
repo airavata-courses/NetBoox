@@ -2,8 +2,6 @@ from flask import Flask
 from flask import request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
-from bson.json_util import dumps
-# from kafka import KafkaProducer
 import kafkaconsumer
 import sys
 import json
