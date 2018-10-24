@@ -9,11 +9,12 @@
     "cors": "^2.8.4",
     "crypto": "^1.0.1",
     "express": "^4.16.4",
-    "express-graphql": "^0.6.12",
     "forever": "^0.15.3",
-    "graphql": "^14.0.2",
     "kafka-node": "^3.0.1",
-    "mongoose": "^5.2.15"
+    "mongoose": "^5.2.15",
+    "nodemailer": "^4.6.8",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "xoauth2": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
