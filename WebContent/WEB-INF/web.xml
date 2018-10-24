@@ -22,5 +22,9 @@
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/netbux/*</url-pattern>
 	</servlet-mapping>
-	
+		<listener>
+		<listener-class>
+			com.netbux.zookeeper.InitiateServiceRegistry
+		</listener-class>
+	</listener>
 </web-app>
