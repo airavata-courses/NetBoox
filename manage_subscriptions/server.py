@@ -6,6 +6,7 @@ import kafkaconsumer
 import sys
 import json
 import requests
+import zookeeperService
 
 app=Flask(__name__)
 CORS(app)
@@ -59,7 +60,7 @@ def findAllUsers():
 @app.route('/manage_subscription/cancelSubscription', methods=['POST'])
 def deleteUser():
     data = request.get_json()
-    # print(data)
+    print(data)
     email = data.get('email')
     new_data = users.find_one({"email": email})
     if new_data:
@@ -73,7 +74,7 @@ def deleteUser():
                 'subscriptionValid':data.get('subscriptionValid')
             }
         }
-        callProducer(send_msg)
+        # callProducer(send_msg)
         return jsonify(
             {
                 "matched_count": result.matched_count,
@@ -91,11 +92,13 @@ def deleteUser():
 
 def callProducer(send_msg):
     print("Msg : {0}" .format(send_msg))
-    response = requests.post("http://127.0.0.1:4004/kafkaproducer", json.dumps(send_msg), headers=headers)
+    data = zookeeperService.kafkaServiceDiscovery("/kafkaProducer")
+    response = requests.post("http://{0}:{1}/kafkaproducer".format(data.host, data.port), json.dumps(send_msg), headers=headers)
     print(response)
     return response
 
-kafkaconsumer.kconsumer()
 
 if __name__ == "__main__":
     app.run(debug=True, port=4002)
+    zookeeperService.registerService("/pythonFlask")
+    kafkaconsumer.kconsumer()
