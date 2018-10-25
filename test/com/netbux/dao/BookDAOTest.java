@@ -13,9 +13,8 @@ public class BookDAOTest {
 		BookDAO dao = new BookDAO();
 		assertNotNull(dao.getMongoClient());
 	}
-	// Commenting as these services discovers getAuthorById service 
-	// CuratorFramework must be started first in order to do that.
-/*	@Test
+	
+	@Test
 	public void getBooksTest() {
 		BookDAO dao = new BookDAO();
 		assertNotNull(dao.getBooks());
@@ -26,5 +25,5 @@ public class BookDAOTest {
 		BookDAO dao = new BookDAO();
 		assertNotNull(dao.getBookById("5bce2a0ceb701011b6151a7b"));
 	}
-*/
+
 }
