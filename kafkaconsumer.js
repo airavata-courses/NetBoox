@@ -4,8 +4,9 @@ var kafka = require('kafka-node')
 
 module.exports = {
     kafkaConsumer : function() {
-        Consumer = kafka.Consumer,
-        client = new kafka.KafkaClient(),
+        Consumer = kafka.Consumer
+        // client = new kafka.KafkaClient({kafkaHost: '10.3.100.196:9092'}),
+        client = new kafka.KafkaClient({kafkaHost: '10.3.100.196:9092'})
         consumer = new Consumer(client,
             [{ topic: 'updateProfile', offset: 0}],
             {

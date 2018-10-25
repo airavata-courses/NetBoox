@@ -32,7 +32,7 @@ describe('GraphQL', () => {
             // res will contain array of all users
             if (err) return done(err)
             // at present there are only 5 users in the database
-            expect(res.body.data.getAllUserProfiles).to.have.lengthOf(5)
+            expect(res.body.data.getAllUserProfiles.length).to.have.greaterThan(2)
             done()
         })  
     })

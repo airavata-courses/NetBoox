@@ -8,6 +8,7 @@ const express_graphql = require('express-graphql')
 const schema = require('./schema.js')
 const cors = require('cors')
 const consumer = require('./kafkaconsumer.js')
+const zookeeper = require('./zookeeperService.js')
 
 // #endregion
 
@@ -33,9 +34,17 @@ app.use('/graphql', express_graphql({
  * Call the kafka consumer
  */
 consumer.kafkaConsumer()
+
+/*
+ * Call Zookeeper client to register itself
+ */
+async function ZK (server) {
+    await zookeeper.zkCreateClient(server)
+}
 /*
  * Start the server
  */
 const server = app.listen(4001, () => {
-    console.log(`Express Graphql Server now running on localhost:${server.address().port}/graphql`)
+    console.log(`Express Graphql Server now running on ${server.address().address} :${server.address().port}/graphql`)
+    ZK(server)
 })

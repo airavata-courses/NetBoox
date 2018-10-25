@@ -4,6 +4,7 @@
 const mongoose = require('../connection.js').mongoose
 const crypto = require('crypto')
 const axios = require('axios')
+const zk = require('../zookeeperService.js')
 // #region Helper functions
 /*
  * Helper functions for the schema
@@ -78,8 +79,26 @@ function saltHashPassword(userpassword, salt) {
 }
 // #endregion
 
+
 /*
- *Create the required schema of the data
+ * Helper function for Zookeeper and Kafka
+ */
+async function sendToKafkaProducer(payload){
+    var data = discoverService("/kafkaProducer")
+    axios.post(`http://${data.host}:${data.port}/kafkaproducer`, payload)
+}
+
+async function discoverService(serviceName){
+    if (await zk.checkExistance(serviceName)) {
+        var data = await zk.serviceDiscovery(serviceName)
+        return data
+    }
+    else {
+        return "Service does not exists" 
+    }
+}
+/*
+ * Create the required schema of the data
  */
 const ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -252,7 +271,8 @@ module.exports = {
                     subscriptionValid: result.subscriptionValid
                 }
             }
-            axios.post("http://localhost:4004/kafkaproducer", payload)
+            // Send the data to kafka Producer to be sent to the manage subscription service to add user profile there too.
+            sendToKafkaProducer(payload)  
             return result
         }
         return JSON.parse(
