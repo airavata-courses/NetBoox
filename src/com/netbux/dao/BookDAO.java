@@ -78,26 +78,27 @@ public class BookDAO {
 		
 		for (String ids : authors) {
 
-			ServiceDiscoverer discoverer = new ServiceDiscoverer("getAuthorById", "authors");
-			discoverer.start();
-			ClientConfig config = new ClientConfig();
-			Client getAuthorById = ClientBuilder.newClient(config.register(LoggingFilter.class));
+//			ServiceDiscoverer discoverer = new ServiceDiscoverer("getAuthorById", "authors");
+//			discoverer.start();
+//			ClientConfig config = new ClientConfig();
+//			Client getAuthorById = ClientBuilder.newClient(config.register(LoggingFilter.class));
+//			
+//			ServiceInstance<InstanceDetails> authorInstance = discoverer.getServiceUrl();
+//			
+//			WebTarget webTarget = getAuthorById.target(UriBuilder.fromUri(authorInstance.buildUriSpec()).path(ZookeeperClient.BASE_PATH + "authors/getAuthorById").path(ids).build());
+//			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+//			Response response = invocationBuilder.get();
+//			
+//		    JSONObject responseJson = new JSONObject(response.readEntity(String.class));
+//			String authorId = responseJson.getString("id");
+//			String firstName = responseJson.getString("firstName");
+//			String lastName = responseJson.getString("lastName");
+//			String gender = responseJson.getString("gender");
 			
-			ServiceInstance<InstanceDetails> authorInstance = discoverer.getServiceUrl();
-			
-			WebTarget webTarget = getAuthorById.target(UriBuilder.fromUri(authorInstance.buildUriSpec()).path(ZookeeperClient.BASE_PATH + "authors/getAuthorById").path(ids).build());
-			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-			Response response = invocationBuilder.get();
-			
-		    JSONObject responseJson = new JSONObject(response.readEntity(String.class));
-			String authorId = responseJson.getString("id");
-			String firstName = responseJson.getString("firstName");
-			String lastName = responseJson.getString("lastName");
-			String gender = responseJson.getString("gender");
-			Author author = new Author(authorId, firstName, lastName, gender);
+			Author author = new Author("authorId", "firstName", "lastName", "gender");
 		    
 		    authorList.add(author);
-		    discoverer.close();
+		  //  discoverer.close();
 		}
 		
 		return new Book(id, title, desc, edition, authorList, link, imageLocation);
