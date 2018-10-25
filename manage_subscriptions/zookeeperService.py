@@ -1,7 +1,7 @@
 from kazoo.client import KazooClient
 from kazoo.client import KazooState
 from kazoo.client import KeeperState
-from kazoo.retry import KazooRetry
+
 from json import load
 import requests 
 import json
