@@ -1,0 +1,33 @@
+{
+  "name": "netboox",
+  "version": "1.0.0",
+  "description": "This API is to perform service discovery from Zookeeper for the Front-End application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airavata-courses/NetBoox.git"
+  },
+  "keywords": [
+    "Zookeeper",
+    "API",
+    "Service",
+    "Discovery",
+    "Netboox"
+  ],
+  "author": "Sagar Suresh Panchal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/airavata-courses/NetBoox/issues"
+  },
+  "homepage": "https://github.com/airavata-courses/NetBoox#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "node-zookeeper-client": "^0.2.2"
+  }
+}
