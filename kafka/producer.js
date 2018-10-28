@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 var Producer = kafka.Producer,
-    client = new kafka.KafkaClient(),
-    producer = new Producer(client);
+    client = new kafka.KafkaClient({kafkaHost: '149.165.170.59:9092'}),
+    producer = new Producer(client)
 
 producer.on('ready', function () {
     console.log('Producer is ready');
@@ -23,23 +23,27 @@ producer.on('error', function (err) {
 })
 
 
-app.post('/kafkaproducer',function(req, res){
-    console.log("req.body.topic: ", req.body.topic)
+app.post('/kafkaProducer',function(req, res){
     const buffer = new Buffer.from(JSON.stringify(req.body.data));
     payloads = [
         { topic: req.body.topic, messages:buffer , partition: 0 }
     ];
-    producer.send(payloads, function (err, data) {
+    console.log(`Topic received is ${req.body.topic} and Message is ${JSON.stringify(req.body.data)}`)
+    producer.send(payloads, (err, data) => {
+        if (err)
+            console.log(err)
+        
         console.log(data)
-        res.json(data);
-    });
+        res.json(data)
+    })
 })
 
-async function ZK (server) {
-    await zk.zkCreateClient(server)
-}
+// async function ZK (server) {
+//     var text = await zk.zkCreateClient(server)
+//     console.log(text)
+// }
 
 const server = app.listen(4004, () => {
     console.log(`Kafka producer now running on ${server.address().address} :${server.address().port}/kafkaProducer`)
-    ZK(server)
+    // ZK(server)
 })
