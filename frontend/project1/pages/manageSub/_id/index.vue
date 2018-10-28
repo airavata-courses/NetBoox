@@ -35,13 +35,33 @@ export default {
     data() {
         return {
             headers: {"Content-type": "application/json"},
-            url: "http://127.0.0.1:4002/manage_subscription/",
+            // url: "http://127.0.0.1:4002/manage_subscription/",
         }
     },
 
         
     async asyncData( context ) {
-        let url = 'http://127.0.0.1:4002/manage_subscription/'
+        let payload = {
+            path: '/NetBoox/SubscriptionService'
+        }
+          
+        let headers = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+        let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
+        let url
+        if (!urlData.data.errorFlag) {
+            url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
+        }
+        else {
+            console.log("Service does not exists")
+            return
+        }
+
+        // let url = 'http://127.0.0.1:4002/manage_subscription/'
 
         try {
             let response = await axios.get(url + `findOneUser/${ context.params.id }`)
@@ -61,9 +81,23 @@ export default {
                 email: email
             }
 
+            let payload = {
+                path: '/NetBoox/SubscriptionService'
+            }
+
+            let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+            let urlData = await axios.post(serviceDiscoveryURL, payload, this.headers)
+            let url
+            if (!urlData.data.errorFlag) {
+                url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
+            }
+            else {
+                console.log("Service does not exists")
+                return
+            }
+
             try{
-                let response = await axios.post(this.url + 'cancelSubscription', params, this.headers )
-                console.log(response)
+                let response = await axios.post(url + 'cancelSubscription', params, this.headers )
                 if (response.data.acknowledged && response.data.modified_count == 1){
                     // Go to login page as the subscription has ended and the user must be logged out. - Keerthi
                 }

@@ -41,14 +41,39 @@ export default {
 
   components: {
     DisplayBooks
-  },
-
-  async asyncData () {
-    let response = await axios.get('http://js-169-242.jetstream-cloud.org:8080/Netbux_Microservice/netbux/getbooks/')
-    return {
-      books : response.data
-    }
   }
+
+  // async asyncData () {
+  //   let payload = {
+  //     // path: '/NetBoox/UserProfileService'
+  //     path: '/Netbux_Microservice/netbux/getbooks'
+  //   }
+
+  //   let headers = {
+  //     headers: {
+  //       'Content-type': 'application/json'
+  //     }
+  //   }
+
+  //   let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+
+  //   let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
+
+  //   let url
+  //   if (!urlData.data.errorFlag) {
+  //     url = `http://${urlData.data.host}:${urlData.data.port}/Netbux_Microservice/netbux/getbooks`
+  //     console.log("URL: ", url)
+  //   }
+  //   else {
+  //     console.log("Service does not exists")
+  //     return
+  //   }
+  //   // let response = await axios.get('http://js-169-242.jetstream-cloud.org:8080/Netbux_Microservice/netbux/getbooks/')
+  //   let response = await axios.get(url)
+  //   return {
+  //     books : response.data
+  //   }
+  // }
  };
 </script>
 

@@ -36,21 +36,36 @@ import axios from 'axios';
     }
     },
     methods: {
-      validate : function() {
+      validate : async function () {
         if (this.email && this.password)
         {
-          let url = 'http://localhost:4001/graphql'
+          let payload = {
+            path: '/NetBoox/UserProfileService'
+          }
+          
+          let headers = {
+            headers: {
+              'Content-type': 'application/json'
+            }
+          }
+
+          let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+          let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
+          let url
+          if (!urlData.data.errorFlag) {
+            url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
+          }
+          else {
+            console.log("Service does not exists")
+            return
+          }
 
           let query = JSON.stringify(
             {
               "query": `{ verifyLogin (email: "${this.email}", password: "${this.password}" ) { successMsg errorMsg errorFlag } }`
             }
           )
-          let headers = {
-            headers: {
-              'Content-type': 'application/json'
-            }
-          }
+          
           axios.post(url, query, headers)
             .then((response) => {
               var res = response.data.data.verifyLogin

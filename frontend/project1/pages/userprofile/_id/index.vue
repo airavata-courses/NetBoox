@@ -18,20 +18,34 @@ import axios from 'axios';
 
 export default {
     async asyncData( context ){
+        let payload = {
+            path: '/NetBoox/UserProfileService'
+        }
+          
+        let headers = {
+            headers: {
+              'Content-type': 'application/json'
+            }
+        }
 
-        let url = 'http://localhost:4001/graphql'
+        let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+        let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
+        let url
+        if (!urlData.data.errorFlag) {
+            url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
+        }
+        else {
+            console.log("Service does not exists")
+            return
+        }
+
+        // let url = 'http://localhost:4001/graphql'
 
         let data = JSON.stringify(
             {
                 "query": `{ getUserProfile (email: "${context.params.id}") { id firstName lastName email phone subscriptionValid subscriptionEnds readList errorFlag errorMsg successMsg } }`
             }
         )
-        
-        let headers = {
-            headers: {
-              'Content-type': 'application/json'
-            }
-        }
 
         try {
             let output = await axios.post(url, data, headers)
