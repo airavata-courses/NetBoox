@@ -16,8 +16,6 @@ mongo=PyMongo(app)
 users = mongo.db.users
 
 headers = {"Content-type": "application/json"}
-#producer related stuff
-#producer =KafkaProducer(bootstrap_servers=['localhost:4004'],value_serializer=lambda m:json.dumps(m).encode('ascii'))
 
 # @app.route('/manage_subscription/addUser', methods=['POST'])
 def addUser(data):
@@ -40,7 +38,7 @@ def addUser(data):
     
 @app.route('/manage_subscription/findOneUser/<email>')
 def findOneUser(email):
-    print(email)
+    # print(email)
     new_data = users.find_one({"email": email})
     if new_data:
         new_data['_id'] = str(new_data['_id'])
@@ -58,22 +56,20 @@ def findAllUsers():
 
 
 @app.route('/manage_subscription/cancelSubscription', methods=['POST'])
-def deleteUser():
+def cancelSubscription():
     data = request.get_json()
-    print(data)
     email = data.get('email')
     new_data = users.find_one({"email": email})
     if new_data:
-        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionvalid" : False } })
+        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionValid" : False } })
         send_msg= {
             'topic': 'updateProfile',
             'data' : {
-                'id': "5bb918ea77a2c97118650071",
-                'email':data.get('email'),
-                'phone':data.get('phone'),
-                'subscriptionValid':data.get('subscriptionValid')
+                'id': "5bb918ea77a2c97118650071", # new_data['userProfileId']
+                'subscriptionValid':new_data['subscriptionValid']
             }
         }
+        # print(send_msg)
         # callProducer(send_msg)
         return jsonify(
             {
@@ -91,14 +87,22 @@ def deleteUser():
 
 
 def callProducer(send_msg):
-    print("Msg : {0}" .format(send_msg))
-    data = zookeeperService.kafkaServiceDiscovery("/kafkaProducer")
-    response = requests.post("http://{0}:{1}/kafkaproducer".format(data.host, data.port), json.dumps(send_msg), headers=headers)
-    print(response)
-    return response
+    # print("Msg : {0}" .format(send_msg))
+    # data = json.loads(zookeeperService.kafkaServiceDiscovery("/kafkaProducer"))
+    # if data:
+    #     response = requests.post("http://{0}:{1}/kafkaproducer".format(data["host"], data["port"]), json.dumps(send_msg), headers=headers)
+    #     print(response)
+    #     return response
+    # else:
+    #     print("Zookeeper node was not found for /kafkaProducer")
 
+    print("Msg : {0}" .format(send_msg))
+    response = requests.post("http://localhost:4004/kafkaproducer", json.dumps(send_msg), headers=headers)
+    print(response)
+
+# zookeeperService.registerService()
 
 if __name__ == "__main__":
     app.run(debug=True, port=4002)
-    zookeeperService.registerService("/pythonFlask")
     kafkaconsumer.kconsumer()
+    
