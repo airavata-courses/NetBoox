@@ -84,19 +84,18 @@ function saltHashPassword(userpassword, salt) {
  * Helper function for Zookeeper and Kafka
  */
 async function sendToKafkaProducer(payload){
-    var data = discoverService("/kafkaProducer")
-    axios.post(`http://${data.host}:${data.port}/kafkaproducer`, payload)
+    try {    
+        // var data = await zk.serviceDiscovery("/kafkaProducer")
+        // console.log(`kafkaProducer is running on  ${data.host}:${data.port}`)
+        // axios.post(`http://${data.host}:${data.port}/kafkaProducer`, payload)
+        axios.post(`http://localhost:4004/NetBoox/KafkaProducer`, payload)
+        // return
+    }
+    catch (e) {
+        console.log(e)
+    }
 }
 
-async function discoverService(serviceName){
-    if (await zk.checkExistance(serviceName)) {
-        var data = await zk.serviceDiscovery(serviceName)
-        return data
-    }
-    else {
-        return "Service does not exists" 
-    }
-}
 /*
  * Create the required schema of the data
  */
@@ -207,9 +206,6 @@ module.exports = {
                     args.password = hashedPassword.password
                     args.salt = hashedPassword.salt
                 }
-                if(args.subscriptionValid){
-                    
-                }
             }
             // Options = new : true is to send the updated document of the user rather then the old one
             var options = { new: true }
@@ -267,12 +263,11 @@ module.exports = {
                 topic: 'addSubscriptionProfile',
                 data: {
                     userProfileId: result.id,
-                    email: result.email,
                     subscriptionValid: result.subscriptionValid
                 }
             }
             // Send the data to kafka Producer to be sent to the manage subscription service to add user profile there too.
-            sendToKafkaProducer(payload)  
+            sendToKafkaProducer(payload)
             return result
         }
         return JSON.parse(

@@ -31,20 +31,23 @@ app.use('/graphql', express_graphql({
 }))
 
 /*
- * Call the kafka consumer
- */
-consumer.kafkaConsumer()
-
-/*
  * Call Zookeeper client to register itself
  */
 async function ZK (server) {
-    await zookeeper.zkCreateClient(server)
+    var text = await zookeeper.zkCreateClient(server)
+    console.log(text)
 }
+
+// ZK()
+
+
+/*
+ * Call the kafka consumer
+ */
+consumer.kafkaConsumer()
 /*
  * Start the server
  */
 const server = app.listen(4001, () => {
     console.log(`Express Graphql Server now running on ${server.address().address} :${server.address().port}/graphql`)
-    ZK(server)
 })
