@@ -9,6 +9,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
+var route = '/NetBoox/KafkaProducer'
+
 var Producer = kafka.Producer,
     client = new kafka.KafkaClient({kafkaHost: '149.165.170.59:9092'}),
     producer = new Producer(client)
@@ -23,7 +25,7 @@ producer.on('error', function (err) {
 })
 
 
-app.post('/kafkaProducer',function(req, res){
+app.post(route, function(req, res){
     const buffer = new Buffer.from(JSON.stringify(req.body.data));
     payloads = [
         { topic: req.body.topic, messages:buffer , partition: 0 }
@@ -33,17 +35,17 @@ app.post('/kafkaProducer',function(req, res){
         if (err)
             console.log(err)
         
-        console.log(data)
+        console.log("returned data: ", data)
         res.json(data)
     })
 })
 
-// async function ZK (server) {
-//     var text = await zk.zkCreateClient(server)
-//     console.log(text)
-// }
+async function ZK (server) {
+    var text = await zk.zkCreateClient(server)
+    console.log(text)
+}
 
 const server = app.listen(4004, () => {
-    console.log(`Kafka producer now running on ${server.address().address} :${server.address().port}/kafkaProducer`)
-    // ZK(server)
+    console.log(`Kafka producer now running on ${server.address().address} :${server.address().port}${route}`)
+    ZK(server)
 })

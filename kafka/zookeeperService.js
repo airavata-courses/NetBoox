@@ -1,32 +1,34 @@
-// var zk = require('node-zookeeper-client')
-// var publicIp = require('public-ip')
+var zk = require('node-zookeeper-client')
+var publicIp = require('public-ip')
 
-// var url = '149.165.170.59:2181' // Zookeeper IP address
-// var path = '/NetBoox/KafkaProducer'            // The path to be registered as a node in ZK
-// var client
+var url = '149.165.170.59:2181'                 // Zookeeper IP address
+var path = '/NetBoox/KafkaProducer'            // The path to be registered as a node in ZK
+var client
 
-// module.exports = {
-//     zkCreateClient: async function (server) {
-//         client = zk.createClient(url, {retries: 2})  // Connect ZK
-//         client.connect()
+module.exports = {
+    zkCreateClient: async function (server) {
+        client = zk.createClient(url, {retries: 2})  // Connect ZK
+        client.connect()
         
-//         var ip = '127.0.0.1'
-//         // var ip = await publicIp.v4()
-//         const buffer = new Buffer.from(JSON.stringify({
-//             host: ip,
-//             port: server.address().port
-//         }))
+        var ip = '127.0.0.1'
+        // var ip = await publicIp.v4()
+        const buffer = new Buffer.from(JSON.stringify({
+            host: ip,
+            port: server.address().port
+        }))
 
-//         return new Promise((resolve, reject) => {
-//             client.create(path, buffer, zk.CreateMode.EPHEMERAL, function (error, path) {
-//                 if(error){
-//                     if (error.code == zk.Exception.NODE_EXISTS) resolve("Cannot create node as the Node already exists")
-//                     else reject(error)
-//                 }
-//                 else resolve(`Path: ${path} is successfully created.`)
-//             })
-//         })
-//     },
+        return new Promise((resolve, reject) => {
+            client.create(path, buffer, zk.CreateMode.EPHEMERAL, function (error, path) {
+                if(error){
+                    if (error.code == zk.Exception.NODE_EXISTS) 
+                        resolve("Node already exists in Zookeeper")
+                    else 
+                        reject(error)
+                }
+                else resolve(`Path: ${path} is successfully created.`)
+            })
+        })
+    },
 
 // Code is only till up, below code is obsolete
 
@@ -54,4 +56,4 @@
     //         })
     //     })
     // }
-// }
+}
