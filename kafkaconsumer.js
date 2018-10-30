@@ -21,7 +21,7 @@ module.exports = {
         consumer.on('message', (message) => {
             var buf = new Buffer(message.value,"binary")
             var decodedMessage = JSON.parse(buf.toString())
-            console.log(decodedMessage)
+            console.log("decodedmessage: ", decodedMessage)
             UserProfile.updateUserProfile(decodedMessage)
         })
 

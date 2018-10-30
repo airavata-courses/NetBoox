@@ -85,10 +85,11 @@ function saltHashPassword(userpassword, salt) {
  */
 async function sendToKafkaProducer(payload){
     try {    
-        // var data = await zk.serviceDiscovery("/kafkaProducer")
-        // console.log(`kafkaProducer is running on  ${data.host}:${data.port}`)
-        // axios.post(`http://${data.host}:${data.port}/kafkaProducer`, payload)
-        axios.post(`http://localhost:4004/NetBoox/KafkaProducer`, payload)
+        path = "/NetBoox/KafkaProducer"
+        var data = await zk.serviceDiscovery(path)
+        console.log(`kafkaProducer is running on  ${data.host}:${data.port}`)
+        axios.post(`http://${data.host}:${data.port}${path}`, payload)
+        // axios.post(`http://localhost:4004/NetBoox/KafkaProducer`, payload)
         // return
     }
     catch (e) {
@@ -263,6 +264,7 @@ module.exports = {
                 topic: 'addSubscriptionProfile',
                 data: {
                     userProfileId: result.id,
+                    email: result.email,
                     subscriptionValid: result.subscriptionValid
                 }
             }

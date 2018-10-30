@@ -6,7 +6,7 @@ var path = '/NetBoox/UserProfileService'            // The path to be registered
 var client
 
 module.exports = {
-    zkCreateClient: async function (server) {
+    zkCreateClient: async function () {
         client = zk.createClient(url, {retries: 2})  // Connect ZK
         client.connect()
 
@@ -20,8 +20,10 @@ module.exports = {
             return new Promise((resolve, reject) => {
                 client.create(path, buffer, zk.CreateMode.EPHEMERAL, function (error, path) {
                     if(error){
-                        if (error.code == zk.Exception.NODE_EXISTS) resolve("Cannot create node as the Node already exists")
-                        else reject(error)
+                        if (error.code == zk.Exception.NODE_EXISTS) 
+                            resolve("Node already exists in Zookeeper")
+                        else 
+                            reject(error)
                     }
                     else resolve(`Path: ${path} is successfully created.`)
                 })
@@ -36,40 +38,40 @@ module.exports = {
 // Code is only till up, below code is obsolete
 
 
-    // checkExistance: async function (serviceName) {
-    //     try {
-    //         return new Promise((resolve, reject) => {
-    //             client.exists(serviceName, (error, stat)  => {
-    //                 if(error) reject(error)
+    checkExistance: async function (serviceName) {
+        try {
+            return new Promise((resolve, reject) => {
+                client.exists(serviceName, (error, stat)  => {
+                    if(error) reject(error)
 
-    //                 if(stat) 
-    //                     resolve(true)
-    //                 else
-    //                     resolve(false)
-    //             })
-    //         })
-    //     }
-    //     catch (e) {
-    //         console.log(e)
-    //         return
-    //     }
-    // },
+                    if(stat) 
+                        resolve(true)
+                    else
+                        resolve(false)
+                })
+            })
+        }
+        catch (e) {
+            console.log(e)
+            return
+        }
+    },
 
-    // serviceDiscovery: async function (serviceNode) {
-    //     try {
-    //         return new Promise((resolve, reject) => {
-    //             client.getData(serviceNode, (error, data, stat)  => {
-    //                 if(error){
-    //                     if (error.code == zk.Exception.NO_NODE) resolve(null)
-    //                     else reject(error)
-    //                 }
-    //                 else resolve(JSON.parse(data.toString('utf8')))
-    //             })
-    //         })
-    //     }
-    //     catch (e) {
-    //         console.log(e)
-    //         return
-    //     }
-    // }
+    serviceDiscovery: async function (serviceNode) {
+        try {
+            return new Promise((resolve, reject) => {
+                client.getData(serviceNode, (error, data, stat)  => {
+                    if(error){
+                        if (error.code == zk.Exception.NO_NODE) resolve(null)
+                        else reject(error)
+                    }
+                    else resolve(JSON.parse(data.toString('utf8')))
+                })
+            })
+        }
+        catch (e) {
+            console.log(e)
+            return
+        }
+    }
 }

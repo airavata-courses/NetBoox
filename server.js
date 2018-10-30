@@ -33,13 +33,13 @@ app.use('/graphql', express_graphql({
 /*
  * Call Zookeeper client to register itself
  */
-async function ZK (server) {
-    var text = await zookeeper.zkCreateClient(server)
+async function ZK () {
+    var text = await zookeeper.zkCreateClient()
     console.log(text)
 }
 
-// ZK()
 
+ZK()
 
 /*
  * Call the kafka consumer
