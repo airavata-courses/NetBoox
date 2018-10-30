@@ -2,11 +2,13 @@ from flask import Flask
 from flask import request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
+from multiprocessing import Process
 import kafkaconsumer
 import sys
 import json
 import requests
 import zookeeperService
+import os
 
 app=Flask(__name__)
 CORS(app)
@@ -15,18 +17,13 @@ app.config['MONGO_URI']= 'mongodb://keerthi4308:mlab4308@ds261302.mlab.com:61302
 mongo=PyMongo(app)
 users = mongo.db.users
 
+
+t1 = Process(target=kafkaconsumer.kconsumer)
+t1.daemon = True
+
 headers = {"Content-type": "application/json"}
 
-# @app.route('/manage_subscription/addUser', methods=['POST'])
 def addUser(data):
-    # data = request.get_json()
-    # structure={
-    #     "firstname":data.get('firstname'),
-    #     "lastname":data.get('lastname'),
-    #     "email": data.get('email'),
-    #     "phone": data.get('phone'),
-    #     "subscriptionValid": data.get('subscriptionValid')
-    # }
     print("inside function: {0} " .format(data))
     new_id=users.insert(data)
     new_data=users.find_one({'_id':new_id })
@@ -35,6 +32,28 @@ def addUser(data):
         print(jsonify(new_data))
     else:
         return jsonify({"message": "Not able to add the user"}), 500
+
+def shutdown_server():
+    os.environ['PS'] = '0'
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with Werkzeug server')
+    func()
+
+def callProducer(send_msg):
+    print("Msg to be sent to producer : {0}" .format(send_msg))
+    data = json.loads(zookeeperService.kafkaServiceDiscovery("/NetBoox/KafkaProducer"))
+    if data:
+        response = requests.post("http://{0}:{1}/NetBoox/KafkaProducer".format(data["host"], data["port"]), json.dumps(send_msg), headers=headers)
+        print("resonse: ", response)
+        return response
+    else:
+        print("Zookeeper node was not found for /kafkaProducer")
+
+    # print("Msg : {0}" .format(send_msg))
+    # response = requests.post("http://localhost:4004/NetBoox/KafkaProducer", json.dumps(send_msg), headers=headers)
+    # print(response)
+
     
 @app.route('/manage_subscription/findOneUser/<email>')
 def findOneUser(email):
@@ -65,12 +84,13 @@ def cancelSubscription():
         send_msg= {
             'topic': 'updateProfile',
             'data' : {
-                'id': "5bb918ea77a2c97118650071", # new_data['userProfileId']
-                'subscriptionValid':new_data['subscriptionValid']
+                'id': new_data['userProfileId'],
+                'email': new_data['email'],
+                'subscriptionValid': False
             }
         }
-        # print(send_msg)
-        # callProducer(send_msg)
+        print(send_msg)
+        callProducer(send_msg)
         return jsonify(
             {
                 "matched_count": result.matched_count,
@@ -85,24 +105,20 @@ def cancelSubscription():
             }
         ), 404
 
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    t1.terminate()
+    shutdown_server();
+    return "Server shutting down....Khuda Hafiz!!"
 
-def callProducer(send_msg):
-    # print("Msg : {0}" .format(send_msg))
-    # data = json.loads(zookeeperService.kafkaServiceDiscovery("/kafkaProducer"))
-    # if data:
-    #     response = requests.post("http://{0}:{1}/kafkaproducer".format(data["host"], data["port"]), json.dumps(send_msg), headers=headers)
-    #     print(response)
-    #     return response
-    # else:
-    #     print("Zookeeper node was not found for /kafkaProducer")
-
-    print("Msg : {0}" .format(send_msg))
-    response = requests.post("http://localhost:4004/kafkaproducer", json.dumps(send_msg), headers=headers)
-    print(response)
-
-# zookeeperService.registerService()
 
 if __name__ == "__main__":
+    try:
+        if os.getenv('PS') != '0':
+            os.environ['PS'] = '0'
+            zookeeperService.registerService()
+            t1.start()
+    except Exception as e:
+        print('Error: ', e)
     app.run(debug=True, port=4002)
-    kafkaconsumer.kconsumer()
     

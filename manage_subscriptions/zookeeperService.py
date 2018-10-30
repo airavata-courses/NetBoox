@@ -23,11 +23,11 @@ def registerService():
     except NodeExistsError:
         print("Node already exists in Zookeeper")
 
-# def kafkaServiceDiscovery(path):
-#     try:
-#         data, stat = zk.get(path)
-#         data = data.decode("utf-8")
-#         print("data: ", json.dumps(data))
-#         return data
-#     except NoNodeError:
-#         print("No node exists for the givent {0}".format(path))
+def kafkaServiceDiscovery(path):
+    try:
+        data, stat = zk.get(path)
+        data = data.decode("utf-8")
+        print("data: ", json.dumps(data))
+        return data
+    except NoNodeError:
+        print("No node exists for the givent {0}".format(path))
