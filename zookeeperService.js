@@ -10,8 +10,8 @@ module.exports = {
         client = zk.createClient(url, {retries: 2})  // Connect ZK
         client.connect()
 
-        var ip = '127.0.0.1'
-        // var ip = await publicIp.v4()
+        //var ip = '127.0.0.1'
+        var ip = await publicIp.v4()
         const buffer = new Buffer.from(JSON.stringify({
             host: ip,
             port: 4001
