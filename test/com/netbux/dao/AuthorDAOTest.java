@@ -1,4 +1,4 @@
-package com.netbux.dao;
+/*package com.netbux.dao;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -17,4 +17,4 @@ public class AuthorDAOTest {
 		AuthorDAO dao = new AuthorDAO();
 		assertNotNull(dao.getAuthorById("5bce308c26cda927f84754ea"));
 	}
-}
+}*/
