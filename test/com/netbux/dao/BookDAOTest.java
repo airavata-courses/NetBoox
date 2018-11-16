@@ -1,4 +1,4 @@
-/*package com.netbux.dao;
+package com.netbux.dao;
 
 import static org.junit.Assert.*;
 
@@ -26,4 +26,4 @@ public class BookDAOTest {
 		assertNotNull(dao.getBookById("5bce2a0ceb701011b6151a7b"));
 	}
 
-}*/
+}
