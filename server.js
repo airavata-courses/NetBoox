@@ -48,6 +48,6 @@ consumer.kafkaConsumer()
 /*
  * Start the server
  */
-const server = app.listen(4002, () => {
+const server = app.listen(35001, () => {
     console.log(`Express Graphql Server now running on ${server.address().address} :${server.address().port}/graphql`)
 })
