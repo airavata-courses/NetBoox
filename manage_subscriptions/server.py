@@ -120,5 +120,5 @@ if __name__ == "__main__":
             # t1.start()
     except Exception as e:
         print('Error: ', e)
-    app.run(debug=True, port=4002)
+    app.run(debug=True, port=80)
     
