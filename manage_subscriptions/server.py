@@ -90,7 +90,7 @@ def cancelSubscription():
             }
         }
         print(send_msg)
-        callProducer(send_msg)
+        # callProducer(send_msg)
         return jsonify(
             {
                 "matched_count": result.matched_count,
@@ -105,9 +105,9 @@ def cancelSubscription():
             }
         ), 404
 
-@app.route('/shutdown', methods=['POST'])
+@app.route('/shutdown')
 def shutdown():
-    t1.terminate()
+    # t1.terminate()
     shutdown_server();
     return "Server shutting down....Khuda Hafiz!!"
 
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         if os.getenv('PS') != '0':
             os.environ['PS'] = '0'
             zookeeperService.registerService()
-            t1.start()
+            # t1.start()
     except Exception as e:
         print('Error: ', e)
     app.run(debug=True, port=4002)
