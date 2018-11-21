@@ -1,5 +1,4 @@
-manage_subscriptions/.vscode
-manage_subscriptions/.vscode/
-manage_subscriptions/__pycache__
-manage_subscriptions/__pycache__/
+.vscode
+*.pyc
+*.pyo
 manage_subscriptions/eprint.py
