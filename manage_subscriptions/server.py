@@ -9,11 +9,11 @@ import json
 import requests
 import zookeeperService
 import os
-import datetime
+import time
 from multiprocessing import Process
 
-now=datetime.datetime.now()
-print("Current time: ", now.strftime("%Y-%m-%d %H:%M"))
+#now=datetime.datetime.now()
+#print("Current time: ", now.strftime("%Y-%m-%d %H:%M"))
 
 app=Flask(__name__)
 CORS(app)
@@ -21,15 +21,17 @@ app.config['MONGO_DBNAME']='subscribers'
 app.config['MONGO_URI']= 'mongodb://keerthi4308:mlab4308@ds261302.mlab.com:61302/subscribers'
 mongo=PyMongo(app)
 users = mongo.db.users
+
 t1= Process(target=kafkaconsumer.kconsumer)
 t1.daemon=True
 
+ts= time.time()
 
 headers = {"Content-type": "application/json"}
 
 def addUser(data):
     print("inside function: {0} " .format(data))
-    
+    data['subscriptionStartDate']=ts
     new_id=users.insert(data)
     new_data=users.find_one({'_id':new_id })
     if new_data:
@@ -85,7 +87,7 @@ def cancelSubscription():
     email = data.get('email')
     new_data = users.find_one({"email": email})
     if new_data:
-        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionValid" : False } })
+        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionValid" : False,"subscriptionStartDate": ts } })
         send_msg= {
             'topic': 'updateProfile',
             'data' : {
