@@ -118,26 +118,6 @@ def shutdown():
     shutdown_server();
     return "Server shutting down....Khuda Hafiz!!"
 
-def shutdown_server():
-    os.environ['PS'] = "0"
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-
-def callProducer(send_msg):
-    print("Msg : {0}" .format(send_msg))
-    # data = zookeeperService.kafkaServiceDiscovery("/kafkaProducer")
-    # response = requests.post("http://{0}:{1}/kafkaproducer".format(data.host, data.port), json.dumps(send_msg), headers=headers)
-    response=requests.post("http://localhost:4004/kafkaproducer",json.dumps(send_msg),headers=headers)
-    print(response)
-    return response
-    
-# @app.route('/shutdown', methods=["POST"])
-# def shutdown():
-#     t1.terminate()
-#     shutdown_server()
-#     return "shutdown.."
 
 if __name__ == "__main__":
     try:
