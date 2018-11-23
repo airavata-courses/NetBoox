@@ -99,7 +99,8 @@ export default {
             try{
                 let response = await axios.post(url + 'cancelSubscription', params, this.headers )
                 if (response.data.acknowledged && response.data.modified_count == 1){
-                    // Go to login page as the subscription has ended and the user must be logged out. - Keerthi
+                    // Go to login page as the subscription has ended and the user must be logged out
+                    router.push({ name: 'index'}) //need to check whether page reload as new one or not if not, add force: true
                 }
             }
             catch(error) {

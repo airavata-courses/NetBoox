@@ -35,45 +35,49 @@ export default {
   data () {
     return{
       email: this.$route.params.email,
-      books: []
+      books: [{id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
+      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
+      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
+      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
+      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"}]
     }
   },
 
   components: {
     DisplayBooks
-  }
+  },
+// //need to check by Harshall
+//   async asyncData () {
+//     let payload = {
+//       // path: '/NetBoox/UserProfileService'
+//       path: '/Netbux_Microservice/netbux/getbooks'
+//     }
 
-  // async asyncData () {
-  //   let payload = {
-  //     // path: '/NetBoox/UserProfileService'
-  //     path: '/Netbux_Microservice/netbux/getbooks'
-  //   }
+//     let headers = {
+//       headers: {
+//         'Content-type': 'application/json'
+//       }
+//     }
 
-  //   let headers = {
-  //     headers: {
-  //       'Content-type': 'application/json'
-  //     }
-  //   }
+//     let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
 
-  //   let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+//     let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
 
-  //   let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
-
-  //   let url
-  //   if (!urlData.data.errorFlag) {
-  //     url = `http://${urlData.data.host}:${urlData.data.port}/Netbux_Microservice/netbux/getbooks`
-  //     console.log("URL: ", url)
-  //   }
-  //   else {
-  //     console.log("Service does not exists")
-  //     return
-  //   }
-  //   // let response = await axios.get('http://js-169-242.jetstream-cloud.org:8080/Netbux_Microservice/netbux/getbooks/')
-  //   let response = await axios.get(url)
-  //   return {
-  //     books : response.data
-  //   }
-  // }
+//     let url
+//     if (!urlData.data.errorFlag) {
+//       url = `http://${urlData.data.host}:${urlData.data.port}/Netbux_Microservice/netbux/getbooks`
+//       console.log("URL: ", url)
+//     }
+//     else {
+//       console.log("Service does not exists")
+//       return
+//     }
+//     // let response = await axios.get('http://js-169-242.jetstream-cloud.org:8080/Netbux_Microservice/netbux/getbooks/')
+//     let response = await axios.get(url)
+//     return {
+//       books : response.data
+//     }
+//   }
  };
 </script>
 
@@ -83,7 +87,12 @@ export default {
     height: 50px;
     background-color: cornflowerblue;
   }
-
+  button {
+    background-color: #4CAF50;
+    height: 1%;
+    padding: 14px 20px;
+    cursor: pointer;
+}
   .searchbox {
     width: 40%;
     margin-top: 10px;
@@ -92,6 +101,7 @@ export default {
     font-size: 18px;
     color: black;
   }
+
 
   .header-buttons {
       float: right;

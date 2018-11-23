@@ -24,17 +24,20 @@ export default{
 </script>
 
 <style scoped>
+
     .books {
         display: flex;
-        flex-flow: row wrap;
+        float: left;
         align-items: center;
-    }
-    .book {
+        justify-content: center;
+    } 
+ 
+     .book {
         box-sizing: border-box;
-        width: 280px;
-        padding: 8px;
+        padding: 2px;
+        width: 250px;
         border: 1px solid #ccc;
-        margin-top: 2px;
+        margin: 2px;
     }
     .thumbnail {
         background-position: center;
