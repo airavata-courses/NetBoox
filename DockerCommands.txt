@@ -1,0 +1,48 @@
+# Create a docker image
+docker build --no-cache -t <image name>
+
+--no-cache: it will execute all the commands everytime instead of using the cached commands
+
+
+# Remove all stopped containers
+docker rm $(docker ps -a -q)
+
+we can also provide container id'services
+docker rm <Image ID> <Image ID>
+
+
+# Docker remove images (can remove mutliple images also by adding space in between id's)
+docker rmi <Image ID> <Image ID>
+
+
+# Create Docker container from images
+docker run -d --rm -p 4000:4000 --name=node_container3 sspanchal/netboox:NodeServiceImage
+
+-d : for detaching the process and running in background
+--rm : remove the container once its stopped 
+-p : host port : target port
+--name: Container name
+image: the last param should be the image name
+
+
+# Get all images
+docker images
+
+
+# Get all running containers
+docker ps
+
+
+# Create K8s deployment
+kubectl create -f netboox-pythonFlask.yaml
+
+
+# Get all deployments
+kubectl get deployments
+
+
+# Get all services
+kubectl get services
+
+# Get all pods
+kubectl get pods
