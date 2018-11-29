@@ -9,6 +9,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
+var port = 4004
+
 var Producer = kafka.Producer,
     client = new kafka.KafkaClient({kafkaHost: '149.165.170.59:9092'}),
     producer = new Producer(client)
@@ -41,12 +43,12 @@ app.post('/kafkaProducer',function(req, res){
     })
 })
 
-async function ZK (server) {
-    var text = await zk.zkCreateClient(server)
+async function ZK (port) {
+    var text = await zk.zkCreateClient(port)
     console.log(text)
 }
 
-const server = app.listen(4004, () => {
+const server = app.listen(port, () => {
     console.log(`Kafka producer now running on ${server.address().address} :${server.address().port}/kafkaProducer`)
-    // ZK(server)
+    ZK(port)
 })

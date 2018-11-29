@@ -6,7 +6,7 @@ var path = '/NetBoox/KafkaProducer'            // The path to be registered as a
 var client
 
 module.exports = {
-    zkCreateClient: async function (server) {
+    zkCreateClient: async function (port) {
         client = zk.createClient(url, {retries: 2})  // Connect ZK
         client.connect()
         
@@ -14,7 +14,7 @@ module.exports = {
         // var ip = await publicIp.v4()
         const buffer = new Buffer.from(JSON.stringify({
             host: ip,
-            port: server.address().port
+            port: port
         }))
 
         return new Promise((resolve, reject) => {
