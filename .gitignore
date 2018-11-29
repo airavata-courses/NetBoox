@@ -1,0 +1,9 @@
+#dependencies
+bin
+config
+libs
+logs
+node_modules
+site-docs
+NOTICE
+LICENSE
