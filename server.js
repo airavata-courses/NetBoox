@@ -21,8 +21,12 @@ app.use(cors())
 port = process.env.PORT || 4007;
 
 /*
- * Route for API
+ * Routes for API
  */
+app.get('/', (req, res) => {
+  res.send('Welcome to the world of Zookeeper service discovery for Front End!!')
+})
+
 app.post('/discoverService', async (req, res) => {
     console.log(req.body.path)
     if(await zk.checkNodeExists(req.body.path)){
