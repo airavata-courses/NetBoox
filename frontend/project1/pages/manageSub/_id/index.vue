@@ -42,7 +42,7 @@ export default {
         
     async asyncData( context ) {
         let payload = {
-            path: '/NetBoox/SubscriptionService'
+            path: '/NetBoox/manageSubscription'
         }
           
         let headers = {
@@ -82,7 +82,7 @@ export default {
             }
 
             let payload = {
-                path: '/NetBoox/SubscriptionService'
+                path: '/NetBoox/manageSubscription'
             }
 
             let serviceDiscoveryURL = 'http://localhost:4007/discoverService'

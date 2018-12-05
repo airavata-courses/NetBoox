@@ -3,7 +3,7 @@
     <div>
     
       <h1 class="title">
-        Welcome NetBoox
+        Welcome to NetBoox
       </h1>
      <div class="form-group">
                 <label>Email: </label>
@@ -49,7 +49,7 @@ import axios from 'axios';
         if (this.email && this.password)
         {
           let payload = {
-            path: '/NetBoox/UserProfileService'
+            path: '/NetBoox/userProfile'
           }
           
           let headers = {

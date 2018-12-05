@@ -19,7 +19,7 @@ import axios from 'axios';
 export default {
     async asyncData( context ){
         let payload = {
-            path: '/NetBoox/UserProfileService'
+            path: '/NetBoox/userProfile'
         }
           
         let headers = {

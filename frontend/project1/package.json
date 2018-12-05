@@ -1,7 +1,7 @@
 {
-  "name": "project1",
+  "name": "Netboox",
   "version": "1.0.0",
-  "description": "create loginpage",
+  "description": "Netboox application for SGA course",
   "author": "knaredla",
   "private": true,
   "config": {

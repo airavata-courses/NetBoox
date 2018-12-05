@@ -53,7 +53,7 @@ export default {
 
                // post username and password to server
             //     let payload = {
-            //            path: '/NetBoox/UserProfileService'
+            //            path: '/NetBoox/userProfile'
             //     }
             //     let headers = {
             //             headers: {
