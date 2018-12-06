@@ -15,7 +15,7 @@ module.exports = {
         )
 
         consumer.on('ready', () => {
-            console.log("Consumer ready ho gaya bc!!")
+            console.log("Consumer ready ho gaya!!")
         })
         
         consumer.on('message', (message) => {

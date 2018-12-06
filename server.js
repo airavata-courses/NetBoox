@@ -20,10 +20,14 @@ app.use(express.static(__dirname))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors())
-
+const port = 30001                  // Port to be used to run the service
 /*
  * Generate the GraphQL server by setting its Schema and Resolver
  */
+app.get('/', (req, res) => {
+    res.send('Welcome to the world of Node JS service for Netboox!!')
+})
+
 app.use('/graphql', express_graphql({
     schema: schema.schema,
     rootValue: schema.resolver,
@@ -33,13 +37,10 @@ app.use('/graphql', express_graphql({
 /*
  * Call Zookeeper client to register itself
  */
-async function ZK () {
-    var text = await zookeeper.zkCreateClient()
+async function ZK (port) {
+    var text = await zookeeper.zkCreateClient(port)
     console.log(text)
 }
-
-
-ZK()
 
 /*
  * Call the kafka consumer
@@ -48,6 +49,7 @@ consumer.kafkaConsumer()
 /*
  * Start the server
  */
-const server = app.listen(4001, () => {
+const server = app.listen(port, () => {
     console.log(`Express Graphql Server now running on ${server.address().address} :${server.address().port}/graphql`)
+    ZK(port)
 })
