@@ -1,0 +1,29 @@
+{
+  "name": "netboox",
+  "version": "1.0.0",
+  "description": "An application which will allow the user to subscribe and read books on demand.",
+  "main": "producer.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "kafka-node": "^3.0.1",
+    "node-zookeeper-client": "^0.2.2",
+    "public-ip": "^2.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  },
+  "scripts": {
+    "start": "node producer.js"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airavata-courses/Netboox.git"
+  },
+  "author": "Sagar Panchal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/airavata-courses/Netboox/issues"
+  },
+  "homepage": "https://github.com/airavata-courses/Netboox#readme"
+}
