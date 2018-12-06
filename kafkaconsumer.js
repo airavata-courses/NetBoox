@@ -15,7 +15,7 @@ module.exports = {
         )
 
         consumer.on('ready', () => {
-            console.log("Consumer ready ho gaya!!")
+            console.log("Consumer in Node service is ready!!")
         })
         
         consumer.on('message', (message) => {
