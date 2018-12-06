@@ -61,6 +61,9 @@ def callProducer(send_msg):
     # response = requests.post("http://localhost:4004/NetBoox/KafkaProducer", json.dumps(send_msg), headers=headers)
     # print(response)
 
+@app.route('/')
+def baseRoute():
+    return ("You reached the Python service"), 200
     
 @app.route('/manage_subscription/findOneUser/<email>')
 def findOneUser(email):
@@ -129,5 +132,5 @@ if __name__ == "__main__":
             # t1.start()
     except Exception as e:
         print('Error: ', e)
-    app.run(host='0.0.0.0', debug=True, port=4002)
+    app.run(host='0.0.0.0', debug=True, port=30002)
     

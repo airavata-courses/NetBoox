@@ -15,7 +15,7 @@ my_ip= str(requests.get('https://ip.42.pl/raw').text)
 path = '/NetBoox/SubscriptionService'
 # ip= requests.get('https://ip.42.pl/raw').text
 ip = '127.0.0.1'
-pass_data=json.dumps({"host":ip, "port":4002}).encode('utf-8')
+pass_data=json.dumps({"host":ip, "port":30002}).encode('utf-8')
 
 def registerService():
     try:

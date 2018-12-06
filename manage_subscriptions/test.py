@@ -42,7 +42,7 @@ else:
     print(response.status_code)
 
 # payload = {'path' : '/nodeJs'}
-# response = requests.post("http://127.0.0.1:4007/discoverService", json.dumps(payload), headers=headers)
+# response = requests.post("http://127.0.0.1:30006/discoverService", json.dumps(payload), headers=headers)
 # if(response.status_code==200):
 #     print("Service Discovered")
 #     print(json.loads(response.content))
