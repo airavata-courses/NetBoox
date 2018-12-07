@@ -53,14 +53,14 @@ export default {
 
                // post username and password to server
             //     let payload = {
-            //            path: '/NetBoox/userProfile'
+            //            path: '/NetBoox/UserProfileService'
             //     }
             //     let headers = {
             //             headers: {
             //                   'Content-type': 'application/json'
             //             }
             //     }
-            //     let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+            //     let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
             //     let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
             //     let url
             //     if (!urlData.data.errorFlag) {

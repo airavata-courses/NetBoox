@@ -42,7 +42,7 @@ export default {
         
     async asyncData( context ) {
         let payload = {
-            path: '/NetBoox/manageSubscription'
+            path: '/NetBoox/SubscriptionService'
         }
           
         let headers = {
@@ -50,7 +50,7 @@ export default {
                 'Content-type': 'application/json'
             }
         }
-        let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+        let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
         let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
         let url
         if (!urlData.data.errorFlag) {
@@ -62,7 +62,6 @@ export default {
         }
 
         // let url = 'http://127.0.0.1:4002/manage_subscription/'
-
         try {
             let response = await axios.get(url + `findOneUser/${ context.params.id }`)
             let user_subscription_data = response.data
@@ -82,10 +81,10 @@ export default {
             }
 
             let payload = {
-                path: '/NetBoox/manageSubscription'
+                path: '/NetBoox/SubscriptionService'
             }
 
-            let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+            let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
             let urlData = await axios.post(serviceDiscoveryURL, payload, this.headers)
             let url
             if (!urlData.data.errorFlag) {

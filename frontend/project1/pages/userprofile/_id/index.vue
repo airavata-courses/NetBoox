@@ -19,7 +19,7 @@ import axios from 'axios';
 export default {
     async asyncData( context ){
         let payload = {
-            path: '/NetBoox/userProfile'
+            path: '/NetBoox/UserProfileService'
         }
           
         let headers = {
@@ -28,7 +28,7 @@ export default {
             }
         }
 
-        let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+        let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
         let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
         let url
         if (!urlData.data.errorFlag) {

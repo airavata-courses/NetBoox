@@ -59,7 +59,7 @@ export default {
 //       }
 //     }
 
-//     let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+//     let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
 
 //     let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
 

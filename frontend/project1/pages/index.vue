@@ -1,27 +1,26 @@
 <template>
   <section class="container">
     <div>
-    
       <h1 class="title">
         Welcome to NetBoox
       </h1>
-     <div class="form-group">
-                <label>Email: </label>
-                <input type="text" v-model="email" name="email" />
-            </div>
-            <div class="form-group">
-                <label>Password: </label>
-                <input type="password" v-model="password" name="password" />
-            </div>
-            <div class="form-group">
-                <!-- <button class="btn" @click="validate()">Login</button> -->
-                <button class="btn" @click="quicklogin()">Login</button>
-                <nuxt-link to="/newuser"><button class="btn">Register</button></nuxt-link>
-            </div>
-            <p v-if="!loginSuccessful">
-              <b>{{ errorMsg }}</b>
-            </p>
-       </div>
+      <div class="form-group">
+          <label>Email: </label>
+          <input type="text" v-model="email" name="email" />
+      </div>
+      <div class="form-group">
+          <label>Password: </label>
+          <input type="password" v-model="password" name="password" />
+      </div>
+      <div class="form-group">
+          <!-- <button class="btn" @click="validate()">Login</button> -->
+          <button class="btn" @click="validate()">Login</button>
+          <nuxt-link to="/newuser"><button class="btn">Register</button></nuxt-link>
+      </div>
+      <p v-if="!loginSuccessful">
+        <b>{{ errorMsg }}</b>
+      </p>
+    </div>
   </section>
 </template>
 
@@ -37,19 +36,20 @@ import axios from 'axios';
     }
     },
     methods: {
-      quicklogin : async function(){
+      // quicklogin : async function(){
 
-        if(this.email && this.password)
-        {
-          router.push({ name: 'books'})
-        }
-
-      },
+      //   if(this.email && this.password)
+      //   {
+      //     // console.log(this.email)
+      //     // console.log(this.password)
+      //     router.push({ name: 'books'})
+      //   }
+      // },
       validate : async function () {
         if (this.email && this.password)
         {
           let payload = {
-            path: '/NetBoox/userProfile'
+            path: '/NetBoox/UserProfileService'
           }
           
           let headers = {
@@ -58,7 +58,7 @@ import axios from 'axios';
             }
           }
 
-          let serviceDiscoveryURL = 'http://localhost:4007/discoverService'
+          let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
           let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
           let url
           if (!urlData.data.errorFlag) {
