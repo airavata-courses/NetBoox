@@ -15,7 +15,6 @@
   "scripts": {
     "start": "node producer.js"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/airavata-courses/Netboox.git"

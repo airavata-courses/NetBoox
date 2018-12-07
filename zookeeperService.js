@@ -28,7 +28,7 @@ module.exports = {
         })
     },
 
-// Code is only till up, below code is obsolete
+// Below code is not used
 
     checkExistance: async function (serviceName) {
         return new Promise((resolve, reject) => {
