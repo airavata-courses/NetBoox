@@ -18,7 +18,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors())
 
-port = process.env.PORT || 4007;
+const port = process.env.PORT || 30006;
 
 /*
  * Routes for API
