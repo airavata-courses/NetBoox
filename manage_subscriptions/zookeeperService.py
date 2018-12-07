@@ -13,11 +13,11 @@ zk.start()
 my_ip= str(requests.get('https://ip.42.pl/raw').text)
 
 path = '/NetBoox/SubscriptionService'
-# ip= requests.get('https://ip.42.pl/raw').text
-ip = '127.0.0.1'
-pass_data=json.dumps({"host":ip, "port":30002}).encode('utf-8')
+ip = str(requests.get('https://ip.42.pl/raw').text)
+# ip = '127.0.0.1'
 
-def registerService():
+def registerService(port):
+    pass_data=json.dumps({"host":ip, "port":port}).encode('utf-8')
     try:
         zk.create(path,value=pass_data, ephemeral=True, makepath=True)
         print("Python service is registered at: ", path)

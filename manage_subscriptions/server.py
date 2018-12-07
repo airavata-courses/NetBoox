@@ -14,7 +14,7 @@ from multiprocessing import Process
 
 #now=datetime.datetime.now()
 #print("Current time: ", now.strftime("%Y-%m-%d %H:%M"))
-
+port = 30002                # Port number to be used for the service
 app=Flask(__name__)
 CORS(app)
 app.config['MONGO_DBNAME']='subscribers'
@@ -30,13 +30,15 @@ ts= time.time()
 headers = {"Content-type": "application/json"}
 
 def addUser(data):
-    print("inside function: {0} " .format(data))
-    data['subscriptionStartDate']=ts
+    print("inside function: {0} ".format(data))
+    # data['subscriptionStartDate'] = ts
+    print("yaha bhi nhi aarha h bc :", data)
     new_id=users.insert(data)
     new_data=users.find_one({'_id':new_id })
+    print("Ek aur new data h: ", new_data)
     if new_data:
         new_data['_id'] = str(new_data['_id'])
-        print(jsonify(new_data))
+        print("New data is: ", jsonify(new_data))
     else:
         return jsonify({"message": "Not able to add the user"}), 500
 
@@ -119,7 +121,7 @@ def cancelSubscription():
 
 @app.route('/shutdown')
 def shutdown():
-    # t1.terminate()
+    t1.terminate()
     shutdown_server();
     return "Server shutting down....Khuda Hafiz!!"
 
@@ -128,9 +130,9 @@ if __name__ == "__main__":
     try:
         if os.getenv('PS') != '0':
             os.environ['PS'] = '0'
-            zookeeperService.registerService()
-            # t1.start()
+            zookeeperService.registerService(port)
+            t1.start()
     except Exception as e:
         print('Error: ', e)
-    app.run(host='0.0.0.0', debug=True, port=30002)
+    app.run(host='0.0.0.0', debug=True, port=port)
     
