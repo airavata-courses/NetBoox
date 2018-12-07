@@ -21,6 +21,7 @@ public class BookServices {
 	public Response getAllBooks() {
 			BookDAO dao = new BookDAO();
 			ArrayList<Book> bookList = dao.getBooks();
+			System.out.println("getBooks served!");
 			return Response.ok(bookList).build();		
 	}
 	
@@ -30,6 +31,7 @@ public class BookServices {
 	public Response getBookById(@PathParam("id") String id)  {
 		BookDAO dao = new BookDAO();
 		Book book = dao.getBookById(id);
+		System.out.println("getBookById served!");
 		return Response.ok(book).build();
 	}
 }

@@ -39,7 +39,7 @@ public class Registrar {
 			thisInstance = ServiceInstance.<InstanceDetails>builder().name(this.serviceName)
 							.uriSpec(uriSpec)
 							.address(ip)
-							.payload(serviceInstance).port(8080) 
+							.payload(serviceInstance).port(30003) 
 							.build();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
