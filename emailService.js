@@ -9,9 +9,7 @@ let transporter = nodemailer.createTransport(smtpTransport({
     auth: {
       xoauth2: xoauth2.createXOAuth2Generator({
           user: 'netbooxservice@gmail.com',
-          clientId: '1037696236931-i84gsppfs0njup6rjhtpv84r733uda9u.apps.googleusercontent.com',
-          clientSecret: '-BvTCAoQp74Cusx82VWbzU7m',
-          refreshToken: '1/uPhIpY45SI9h2kOnKPtRkxEoSO83Z0y7YsRmIAiJZjk' // this may expire after some time
+          pass:'netboox1234'
       })
       
   
