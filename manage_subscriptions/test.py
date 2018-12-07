@@ -31,9 +31,9 @@ data = {"firstname":"Keerthi", "lastname":"Naredla", "email":"knaredla@iu.edu", 
 
 delete_data = {
     # "email": "knaredla@iu.edu"
-    'email': 'sssss@iu.edu'
+    # 'email': 'finallyitworked@iu.edu'
 }
-response = requests.post("http://127.0.0.1:4002/manage_subscription/cancelSubscription", json.dumps(delete_data), headers=headers)
+response = requests.post("http://127.0.0.1:30002/manage_subscription/cancelSubscription", json.dumps(delete_data), headers=headers)
 if(response.status_code==200):
     print("Subscription cancelled")
     print(response.content)

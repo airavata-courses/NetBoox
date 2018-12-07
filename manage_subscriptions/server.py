@@ -3,6 +3,8 @@ from flask import request, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from multiprocessing import Process
+from flask import Flask, Response
+from kafka import KafkaConsumer
 import kafkaconsumer
 import sys
 import json
@@ -22,25 +24,31 @@ app.config['MONGO_URI']= 'mongodb://keerthi4308:mlab4308@ds261302.mlab.com:61302
 mongo=PyMongo(app)
 users = mongo.db.users
 
-t1= Process(target=kafkaconsumer.kconsumer)
-t1.daemon=True
-
-ts= time.time()
-
 headers = {"Content-type": "application/json"}
 
 def addUser(data):
+    data["subscriptionStartDate"] = time.time()
     print("inside function: {0} ".format(data))
-    # data['subscriptionStartDate'] = ts
-    print("yaha bhi nhi aarha h bc :", data)
     new_id=users.insert(data)
     new_data=users.find_one({'_id':new_id })
-    print("Ek aur new data h: ", new_data)
     if new_data:
         new_data['_id'] = str(new_data['_id'])
-        print("New data is: ", jsonify(new_data))
+        print("New data is: ", new_data)
     else:
         return jsonify({"message": "Not able to add the user"}), 500
+
+def kconsumer():
+        consumer = KafkaConsumer('addSubscriptionProfile', bootstrap_servers='149.165.170.59:9092')
+        for message in consumer:
+                print("Consumer in Python service is ready!!")
+                print ("Topic: ", message.topic)
+                print ("Message: ", json.loads(message.value))
+                addUser(json.loads(message.value))
+
+
+t1= Process(target=kconsumer)
+t1.daemon=True
+
 
 def shutdown_server():
     os.environ['PS'] = '0'
@@ -92,7 +100,7 @@ def cancelSubscription():
     email = data.get('email')
     new_data = users.find_one({"email": email})
     if new_data:
-        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionValid" : False,"subscriptionStartDate": ts } })
+        result = users.update_one({"_id": new_data['_id']}, { "$set": { "subscriptionValid" : False, "subscriptionEndDate": time.time() } })
         send_msg= {
             'topic': 'updateProfile',
             'data' : {
@@ -102,7 +110,7 @@ def cancelSubscription():
             }
         }
         print(send_msg)
-        # callProducer(send_msg)
+        callProducer(send_msg)
         return jsonify(
             {
                 "matched_count": result.matched_count,
