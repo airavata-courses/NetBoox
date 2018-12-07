@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const xoauth2=require('xoauth2');
+//const xoauth2=require('xoauth2');
 var smtpTransport=require('nodemailer-smtp-transport');
 
 let transporter = nodemailer.createTransport(smtpTransport({
@@ -7,34 +7,22 @@ let transporter = nodemailer.createTransport(smtpTransport({
     host: 'smtp.gmail.com',
     secure: true,
     auth: {
-      xoauth2: xoauth2.createXOAuth2Generator({
           user: 'netbooxservice@gmail.com',
-          pass:'netboox1234'
-      })
-      
-  
+          pass:'netboox1234'      
     }
   }));
 /*
 Kafka- Consumer code 
 */
-var kafka=require('kafka-node'),
-Consumer = kafka.Consumer,
-client = new kafka.KafkaClient(),
-consumer = new Consumer(client,
-    [{ topic: 'updateProfile', offset: 0}, { topic: 'addSubscriptionProfile', offset: 0 }],
-    {
-        autoCommit: true,
-        encoding :'buffer'
-    }
-);
+
+var mailOptions = {      from: 'netbooxservice@gmail.com',      to: 'keerthi4308@gmail.com',      subject: 'Sending Email using Node.js',      text: 'That was easy!' };
 consumer.on('message', function (message) {
-    var mailOptions={}
+
     var buf = new Buffer(message.value,"binary")
     var decodedMessage = JSON.parse(buf.toString())
     
     mailOptions.from='netbooxservice@gmail.com';
-    mailOptions.to=decodedMessage.email;
+    mailOptions.to='keerthi4308@gmail.com';
     
     if(decodedMessage.subscriptionValid){
         mailOptions.subject='Netboox Subscription Starts'
@@ -59,12 +47,6 @@ consumer.on('error', function (err) {
 })
 
 consumer.on('offsetOutOfRange', function (err) {
-    console.log('offsetOutOfRange:',err);
+  console.log('offsetOutOfRange:',err);
 })
 
-// var mailOptions = {
-//     from: 'netbooxservice@gmail.com',
-//     to: 'keerthi4308@gmail.com',
-//     subject: 'Sending Email using Node.js',
-//     text: 'That was easy!'
-//   };
