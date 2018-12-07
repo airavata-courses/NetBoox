@@ -18,14 +18,22 @@ module.exports = {
      */
     checkNodeExists: (path) => {
         try {
+            console.log("request idhar aaya: ", path)
             return new Promise((resolve, reject) => {
                 client.exists(path, (error, stat)  => {
-                    if(error) reject(error)
-
-                    if(stat) 
+                    if(error) {
+                        // console.log("error aaya")
+                        reject(error)
+                    }
+                    console.log("stat is: ", stat)
+                    if(stat) {
+                        // console.log("sab kuch sahi")
                         resolve(true)
-                    else
+                    }
+                    else {
+                        // console.log("Daya kuch to gadbad h")
                         resolve(false)
+                    }
                 })
             })
         }

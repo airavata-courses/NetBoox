@@ -28,9 +28,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/discoverService', async (req, res) => {
-    console.log(req.body.path)
+    // console.log("Payload is: ", req.body.path)
     if(await zk.checkNodeExists(req.body.path)){
         var data = await zk.getNodeDetails(req.body.path)
+        console.log("Response from ZK is: ", data)
         var response = {
             host:data.host,
             port: data.port,
