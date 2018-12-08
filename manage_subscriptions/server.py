@@ -5,7 +5,6 @@ from flask_cors import CORS
 from multiprocessing import Process
 from flask import Flask, Response
 from kafka import KafkaConsumer
-import kafkaconsumer
 import sys
 import json
 import requests
