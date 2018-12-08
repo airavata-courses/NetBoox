@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: node-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: node-services
+    spec:
+      containers:
+      - name: node-container
+        image: sspanchal/node.30001
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 30001
+          name: http
+      nodeSelector:
+        worker: nodejs-worker
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: node-services
+  labels:
+    run: node-services
+spec:
+  selector:
+    run: node-services
+  ports:
+  - protocol: TCP
+    targetPort: 30001
+    port: 30001
+    name: http
+    nodePort: 30001
+  type: NodePort
