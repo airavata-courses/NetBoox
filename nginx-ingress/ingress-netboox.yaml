@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-netboox
+spec:
+  rules:
+  - host: netbux-kubernetes-master
+    http: 
+      paths:
+        - path: /*
+          backend:
+            serviceName: jersey-services
+            servicePort: 8080
+        - path: /Netbux_Microservice
+          backend:
+            serviceName: jersey-services
+            servicePort: 8080
