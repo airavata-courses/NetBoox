@@ -6,8 +6,6 @@ WORKDIR /NetBoox/manage_subscriptions/
 
 RUN pip install --upgrade -r requirements.txt
 
-EXPOSE 4002
-
-# ENTRYPOINT [ "python" ]
+EXPOSE 30002
 
 CMD [ "python", "server.py" ]
