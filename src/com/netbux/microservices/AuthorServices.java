@@ -21,7 +21,6 @@ public class AuthorServices {
 	public Response getAllAuthors() {
 		AuthorDAO dao = new AuthorDAO();
 		ArrayList<Author> authorList = dao.getAuthors();
-		System.out.println("getAuthors served!");
 		return Response.ok(authorList).build();
 	}
 	
@@ -31,7 +30,6 @@ public class AuthorServices {
 	public Response getAuthorById(@PathParam("id") String id) {
 		AuthorDAO dao = new AuthorDAO();
 		Author author = dao.getAuthorById(id);
-		System.out.println("getAuthorById served!");
 		return Response.ok(author).build();
 	}
 }
