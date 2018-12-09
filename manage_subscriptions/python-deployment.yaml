@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: python-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: python-services
+    spec:
+      containers:
+      - name: python-container
+        image: sspanchal/python.30002
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 30002
+          name: http
+      nodeSelector:
+          worker: flask-worker
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: python-services
+  labels:
+    app: python-services
+spec:
+  selector:   
+    run: python-services
+  ports:         
+  - protocol: TCP      
+    targetPort: 30002
+    port: 30002
+    nodePort: 30002
+    name: http            
+  type: NodePort
