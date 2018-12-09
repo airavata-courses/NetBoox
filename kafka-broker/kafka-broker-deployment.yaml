@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-broker
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: kafka-broker
+    spec:
+      containers:
+      - name: kakfa-broker
+        image: sspanchal/kafka-broker.30004
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 30004
+          name: http
+      nodeSelector:
+          worker: nodejs-worker
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kafka-broker-service
+  labels:
+    run: kafka-broker-service
+spec:
+  selector:
+    run: kafka-broker
+  ports:
+  - protocol: TCP
+    targetPort: 30004
+    port: 30004
+    name: http
+    nodePort: 30004
+  type: NodePort
+
