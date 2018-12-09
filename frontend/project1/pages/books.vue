@@ -34,7 +34,7 @@ import axios from 'axios';
 export default {
   data () {
     return{
-      email: this.$route.params.email,
+      email: this.$route.query.email,
       books: [{id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
       {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
       {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},

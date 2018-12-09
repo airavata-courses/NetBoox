@@ -48,6 +48,8 @@ import axios from 'axios';
       validate : async function () {
         if (this.email && this.password)
         {
+          // this.loginSuccessful = true
+          // this.$router.push({ name:'books', query: { email: this.email } })
           let payload = {
             path: '/NetBoox/UserProfileService'
           }
@@ -84,7 +86,7 @@ import axios from 'axios';
               }
               else{
                 this.loginSuccessful = true
-                this.$router.push({ name:'books', params: { email: this.email } })
+                this.$router.push({ name:'books', query: { email: this.email } })
               }
             })
             .catch((error) => {
@@ -109,10 +111,10 @@ import axios from 'axios';
         else{
           this.loginSuccessful = false
           this.errorMsg = "Please provide email and password to login"
-        }
+         }
       }
-    }
- };
+   }
+  };
 </script>
 
 <style>
