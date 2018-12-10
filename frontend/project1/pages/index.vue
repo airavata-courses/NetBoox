@@ -64,7 +64,8 @@ import axios from 'axios';
           let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
           let url
           if (!urlData.data.errorFlag) {
-            url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
+            // url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
+            url = `http://localhost:${urlData.data.port}/graphql`
           }
           else {
             console.log("Service does not exists")
