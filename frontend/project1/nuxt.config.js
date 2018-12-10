@@ -10,9 +10,15 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'create loginpage' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
     ]
   },
+  // link: [
+  //   {
+  //     rel:'stylesheet',
+  //     href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+  //   }
+  // ],
   /*
   ** Customize the progress bar color
   */

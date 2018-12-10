@@ -48,8 +48,7 @@ import axios from 'axios';
       validate : async function () {
         if (this.email && this.password)
         {
-          // this.loginSuccessful = true
-          // this.$router.push({ name:'books', query: { email: this.email } })
+         
           let payload = {
             path: '/NetBoox/UserProfileService'
           }

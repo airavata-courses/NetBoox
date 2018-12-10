@@ -4,9 +4,13 @@
    <div class="header">
         <!-- <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" /> -->
         <!-- <input type="text" class="searchbox" name="search" placeholder="Enter book to search" /> -->
+        <!-- <button class="btn"><i class="fa fa-home"></i></button> -->
+         
         <div class="header-buttons">
-         <nuxt-link :to="'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
-         <nuxt-link :to="'/manageSub/' + email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
+          
+         <nuxt-link :to= "'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
+         <nuxt-link :to= "'/manageSub/' + email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
+         <nuxt-link :to= "'/'"> <button type="button" class="logout">LogOut</button> </nuxt-link>
         </div>
     </div>
     <div class="content">
@@ -45,7 +49,7 @@ export default {
 
   components: {
     DisplayBooks
-  },
+  }
 // //need to check by Harshall
 //   async asyncData () {
 //     let payload = {
@@ -106,6 +110,7 @@ export default {
   .header-buttons {
       float: right;
   }
+  
 </style>
 
 

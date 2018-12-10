@@ -26,9 +26,11 @@
     <p>{{message}}</p>
     <div>
       <button type="submit" class="signupbtn" @click="onSubmitted()">Sign Up</button>
-      <button type="button" class="cancelbtn">Cancel</button>
+      <nuxt-link :to= "'/'"><button type="button" class="cancelbtn">Cancel</button></nuxt-link>
+      <!-- <button type="button" class="cancelbtn" @click=this.$router.go(-1)>Cancel</button> -->
     </div>
     </div>
+    
 </section>
 </template>
 
@@ -85,6 +87,7 @@ export default {
                 var res = output.data.data.addUserProfile[0]
                 // Check if errorFlag is false, which means no error is occured then
                 if (!res.errorFlag){
+                    
                     return {
                         id: res.id,
                         firstName: res.firstName,
@@ -116,14 +119,14 @@ export default {
                     console.log("error.request: " + JSON.stringify(error.request))
                 } else {
                 // Something happened in setting up the request that triggered an Error
-                    console.log("error.config: " + JSON.stringify(error.config))
-                    console.log('error.message: ' + JSON.stringify(error.message))
+                    //console.log("error.config: " + JSON.stringify(error.config))
+                    //console.log('error.message: ' + JSON.stringify(error.message))
                 }
             }
         }else {
                 message="Password doesn't match";
             }
-                
+        this.$router.push({ name:'index' })      
      }
   }
 

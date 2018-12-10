@@ -12,7 +12,20 @@
             :subEndDate="sub.endDate" />
     </section> -->
 
+
 <section>
+    <div class="header">
+        <!-- <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" /> -->
+        <!-- <input type="text" class="searchbox" name="search" placeholder="Enter book to search" /> -->
+        
+        <div class="header-buttons">
+         <button type="button" class="home" @click="home()">Home</button>
+         <nuxt-link :to="'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
+         <!-- <nuxt-link :to="'/manageSub/' + email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link> -->
+         <nuxt-link :to="'/'"><button type="button" class="logout">LogOut</button></nuxt-link>
+        </div>
+    </div>
+    <div class="display_details" >
     <h1>Manage Subscription</h1>
     <label>First Name:</label> <p>{{ user_subscription_data.firstname }}</p>
     <label>Last Name:</label> <p>{{ user_subscription_data.lastname }}</p>
@@ -23,6 +36,7 @@
     <label>Subscription End_Date:</label> <p>{{user_subscription_data.endDate}}</p>
     <div>
         <button type="button" class="manageSubCancel" @click="cancelSub(user_subscription_data.email)">Cancel</button>
+    </div>
     </div>
 </section>
 </template>
@@ -105,6 +119,9 @@ export default {
             catch(error) {
                 console.log("Error: ", error)
             }
+        },
+         home:function(){
+            this.$router.push({ name:'books', query: { email: this.email } })
         }
     }
 }

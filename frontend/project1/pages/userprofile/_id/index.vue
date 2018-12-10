@@ -1,19 +1,39 @@
 <template>
 <section>
-    <div v-if = "!errorFlag">
-        <label>User Email:</label> <p>{{ email }}</p>
-        <label>First Name :</label> <p>{{ firstName }}</p>
-        <label>Last Name:</label> <p>{{ lastName }}</p>
-        <label>Phone:</label> <p>{{ phone }}</p>
-        <label>Subscription Ends on: </label> <p>{{ convertTimestampToHumanReadableFormat(subscriptionEnds) }}</p>
+    
+   <div class="header">
+        <!-- <input type="text" class="searchbox" v-model="search" name="search" placeholder="Enter book to search" /> -->
+        <!-- <input type="text" class="searchbox" name="search" placeholder="Enter book to search" /> -->
+        
+        <div class="header-buttons">
+         <button type="button" class="home" @click="home()">Home</button>
+                  <!-- <nuxt-link :to="'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link>  -->
+         <nuxt-link :to="'/manageSub/' + email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
+         <nuxt-link :to="'/'"><button type="button" class="logout">LogOut</button></nuxt-link>
+        </div>
+    </div>
+    <div class="display_details" >
+        
+      <div v-if = "!errorFlag">
+        <h1> My Profile </h1><br/><br/>
+        <p><label>User Email:</label> {{ email }}</p> <br/>
+        <p><label>First Name :</label> {{ firstName }}</p><br/>
+        <p><label>Last Name:</label> {{ lastName }}</p><br/>
+        <p><label>Phone:</label> {{ phone }}</p><br/>
+        <p><label>Subscription Ends on: </label> {{ convertTimestampToHumanReadableFormat(subscriptionEnds) }}</p><br/>
     </div>
     <div v-else>
         <label>Error Msg:</label> <p>{{ errorMsg }}</p>
     </div>
+    </div>
+
+
+
 </section>
 </template>
 
 <script>
+
 import axios from 'axios';
 
 export default {
@@ -96,8 +116,24 @@ export default {
                 month: 'short',
                 year: 'numeric'
             })
+        },
+        home:function(){
+            this.$router.push({ name:'books', query: { email: this.email } })
         }
     }
 }
 
 </script>
+<style scoped>
+.display_details {
+ display: flex;
+justify-content: center;
+margin:0 auto; 
+padding-bottom: 2%;
+padding-top: 2%;
+line-height: 20px;
+}
+.p{
+   padding: 10px; 
+}
+</style>
