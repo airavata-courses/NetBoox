@@ -1,10 +1,10 @@
-const nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer');
 //const xoauth2=require('xoauth2');
 var smtpTransport=require('nodemailer-smtp-transport');
 
 let transporter = nodemailer.createTransport(smtpTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',
+    //host: 'smtp.gmail.com',
     secure: true,
     auth: {
           user: 'netbooxservice@gmail.com',
@@ -14,8 +14,22 @@ let transporter = nodemailer.createTransport(smtpTransport({
 /*
 Kafka- Consumer code 
 */
+var kafka=require('kafka-node'),
+Consumer = kafka.Consumer,
+client = new kafka.KafkaClient({kafkaHost: '149.165.170.59:9092'}),
+consumer = new Consumer(client,
+    [{ topic: 'updateProfile', offset: 0}, { topic: 'addSubscriptionProfile', offset: 0 }],
+    {
+        autoCommit: true,
+        encoding :'buffer'
+    }
+);
 
-var mailOptions = {      from: 'netbooxservice@gmail.com',      to: 'keerthi4308@gmail.com',      subject: 'Sending Email using Node.js',      text: 'That was easy!' };
+var mailOptions = {      from: 'netbooxservice@gmail.com',      
+                         to: 'keerthi4308@gmail.com',     
+                         subject: 'Sending Email using Node.js', 
+                         text: 'That was easy!' };
+
 consumer.on('message', function (message) {
 
     var buf = new Buffer(message.value,"binary")
