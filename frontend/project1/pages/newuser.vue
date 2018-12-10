@@ -48,10 +48,10 @@ export default {
     },
     
     methods: {
-        onSubmitted :async function(){
+        onSubmitted: async function () {
             if(this.password_rpt == this.password){
 
-               // post username and password to server
+            //    post username and password to server
                 let payload = {
                        path: '/NetBoox/UserProfileService'
                 }
@@ -64,63 +64,63 @@ export default {
                 let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
                 let url
                 if (!urlData.data.errorFlag) {
-                    // url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
-                    url = `http://localhost:${urlData.data.port}/graphql`
+                    url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
                 }
                 else {
                     console.log("Service does not exists")
                     return
                 }
-                
+                //need to check by Sagar
                 let data = JSON.stringify(
                 {
-                    "query":  `{ mutation addUserProfile (firstName: ${this.firstname}, lastName: ${this.lastname}, email: ${this.email} , 
-                              phone: ${this.phone}, password: ${this.password}) { id firstName lastName email phone password readList errorMsg } }`
-                })   
+                    "query": `mutation { addUserProfile (firstName: "${this.firstname}", lastName: "${this.lastname}", email: "${this.email}", 
+                              phone: "${this.phone}", password: "${this.password}", subscriptionValid: ${true}, subscriptionEnds: "${new Date().toLocaleDateString()}") 
+                              { id firstName lastName email phone password readList errorMsg errorFlag} }`
+                }   
+            )
 
-                try {
-                    console.log(data)
-                    let output = await axios.post(url, data, headers)
-                    console.log(JSON.stringify(output))
-                    console.log(output)
-                    var res = output.data.data.addUserProfile[0]  
-                    if (!res.errorFlag){
-                        return {
-                            id: res.id,
-                            firstName: res.firstName,
-                            lastName: res.lastName,
-                            email: res.email,
-                            phone: res.phone,
-                            subscriptionEnds: res.subscriptionEnds,
-                            readList: res.readList,
-                            errorFlag: res.errorFlag
-                        }
-                    }
-                    else {
-                        return {
-                            errorMsg: JSON.stringify(res.errorMsg)
-                        }
-                    }
-                }       
-                catch(error) {
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log("error.response.data: " + JSON.stringify(error.response.data))
-                        console.log("error.response.status: " + JSON.stringify(error.response.status))
-                        console.log("error.response.headers: " + JSON.stringify(error.response.headers))
-                    } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                        console.log("error.request: " + JSON.stringify(error.request))
-                    } else {
-                    // Something happened in setting up the request that triggered an Error
-                        console.log("error.config: " + JSON.stringify(error.config))
-                        console.log('error.message: ' + JSON.stringify(error.message))
+            try {
+                let output = await axios.post(url, data, headers)
+                // console.log("op: ", output)
+                var res = output.data.data.addUserProfile[0]
+                // Check if errorFlag is false, which means no error is occured then
+                if (!res.errorFlag){
+                    return {
+                        id: res.id,
+                        firstName: res.firstName,
+                        lastName: res.lastName,
+                        email: res.email,
+                        phone: res.phone,
+                        subscriptionEnds: res.subscriptionEnds,
+                        readList: res.readList,
+                        errorFlag: res.errorFlag
                     }
                 }
-            }else {
+                else {
+                    return {
+                        errorMsg: JSON.stringify(res.errorMsg)
+                    }
+                }
+            }       
+            catch(error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log("error.response.data: " + JSON.stringify(error.response.data))
+                    console.log("error.response.status: " + JSON.stringify(error.response.status))
+                    console.log("error.response.headers: " + JSON.stringify(error.response.headers))
+                } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                    console.log("error.request: " + JSON.stringify(error.request))
+                } else {
+                // Something happened in setting up the request that triggered an Error
+                    console.log("error.config: " + JSON.stringify(error.config))
+                    console.log('error.message: ' + JSON.stringify(error.message))
+                }
+            }
+        }else {
                 message="Password doesn't match";
             }
                 
