@@ -78,7 +78,7 @@ export default {
                 let data = JSON.stringify(
                 {
                     "query": `mutation { addUserProfile (firstName: "${this.firstname}", lastName: "${this.lastname}", email: "${this.email}", 
-                              phone: "${this.phone}", password: "${this.password}", subscriptionValid: ${true}, subscriptionEnds: "${new Date().toLocaleDateString()}") 
+                              phone: "${this.phone}", password: "${this.password}", subscriptionValid: ${true}, subscriptionStarts: "${new Date().toLocaleDateString()}") 
                               { id firstName lastName email phone password readList errorMsg errorFlag} }`
                 }   
             )
