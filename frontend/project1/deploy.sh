@@ -1,2 +1,2 @@
-npm prestart
+npm prestart &
 npm start
