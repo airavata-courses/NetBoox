@@ -4,6 +4,8 @@ RUN git clone -b 7-integrating-project1-microservices-with-frontend https://gith
 
 WORKDIR /NetBoox/frontend/project1/
 
+RUN rm -rf node_modules package-lock.json
+
 Run npm install
 
 RUN npm run build
