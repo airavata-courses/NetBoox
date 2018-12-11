@@ -12,4 +12,4 @@ RUN npm run build
 
 EXPOSE 30000
 
-CMD [ "npm", "start" ]
+CMD [ "./deploy.sh" ]
