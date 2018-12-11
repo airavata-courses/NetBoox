@@ -28,13 +28,18 @@ headers = {"Content-type": "application/json"}
 def addUser(data):
     data["subscriptionStartDate"] = time.time()
     print("inside function: {0} ".format(data))
-    new_id=users.insert(data)
-    new_data=users.find_one({'_id':new_id })
+    new_data = users.find_one({"email": email})
+    # User already present
     if new_data:
-        new_data['_id'] = str(new_data['_id'])
-        print("New data is: ", new_data)
+        return
     else:
-        return jsonify({"message": "Not able to add the user"}), 500
+        new_id=users.insert(data)
+        new_user=users.find_one({'_id':new_id })
+        if new_user:
+            new_user['_id'] = str(new_user['_id'])
+            print("New data is: ", new_user)
+        else:
+            return jsonify({"message": "Not able to add the user"}), 500
 
 def kconsumer():
         consumer = KafkaConsumer('addSubscriptionProfile', bootstrap_servers='149.165.170.59:9092')
