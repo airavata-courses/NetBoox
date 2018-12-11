@@ -1,5 +1,5 @@
 /*
- * Get the required libraries
+ * Get the required libraries and load them
  */
 const mongoose = require('../connection.js').mongoose
 const crypto = require('crypto')
