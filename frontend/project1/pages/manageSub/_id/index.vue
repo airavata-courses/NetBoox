@@ -59,17 +59,17 @@ export default {
                 'Content-type': 'application/json'
             }
         }
-        let url
-        let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
-        let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
-        if (!urlData.data.errorFlag) {
-            url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
-        }
-        else {
-            console.log("Service does not exists")
-            return
-        }
-
+        // let url
+        // let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
+        // let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
+        // if (!urlData.data.errorFlag) {
+        //     url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
+        // }
+        // else {
+        //     console.log("Service does not exists")
+        //     return
+        // }
+        let url = 'http://149.165.170.107:30002/manage_subscription/'
         try {
             // console.log("context.params.id: ", context.params.id)
             let response = await axios.get(url + `findOneUser/${ context.params.id }`)
@@ -95,17 +95,17 @@ export default {
                 path: '/NetBoox/SubscriptionService'
             }
 
-            let url
-            let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
-            let urlData = await axios.post(serviceDiscoveryURL, payload, this.headers)
-            if (!urlData.data.errorFlag) {
-                url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
-            }
-            else {
-                console.log("Service does not exists")
-                return
-            }
-
+            // let url
+            // let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
+            // let urlData = await axios.post(serviceDiscoveryURL, payload, this.headers)
+            // if (!urlData.data.errorFlag) {
+            //     url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
+            // }
+            // else {
+            //     console.log("Service does not exists")
+            //     return
+            // }
+            let url = 'http://149.165.170.107:30002/manage_subscription/'
             try{
                 let response = await axios.post(url + 'cancelSubscription', params, this.headers )
                 if (response.data.acknowledged && response.data.modified_count == 1){

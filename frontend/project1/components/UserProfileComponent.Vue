@@ -38,18 +38,18 @@ export default {
             }
         }
 
-        let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
-        let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
-        let url
-        if (!urlData.data.errorFlag) {
-            url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
-        }
-        else {
-            console.log("Service does not exists")
-            return
-        }
+        // let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
+        // let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
+        // let url
+        // if (!urlData.data.errorFlag) {
+        //     url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
+        // }
+        // else {
+        //     console.log("Service does not exists")
+        //     return
+        // }
 
-        // let url = 'http://localhost:4001/graphql'
+        let url = 'http://149.165.170.107:30001/graphql'
 
         let data = JSON.stringify( //need to check
             {
