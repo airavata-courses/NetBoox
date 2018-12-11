@@ -7,16 +7,13 @@
         <!-- <button class="btn"><i class="fa fa-home"></i></button> -->
          
         <div class="header-buttons">
-          
+         <button type="button" class="home" @click="home()">Home</button> 
          <nuxt-link :to= "'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
          <nuxt-link :to= "'/manageSub/' + email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link>
          <nuxt-link :to= "'/'"> <button type="button" class="logout">LogOut</button> </nuxt-link>
         </div>
     </div>
     <div class="content">
-      <!-- <display-books thumbnail="http://togamas.com/css/images/items/potrait/JPEG_3686.jpg" title="Think and Grow Rich">
-        </display-books> -->
-        <!-- <p>{{$route.params.email}}</p> -->
       <DisplayBooks
         v-for = "book in books"
         :key="book.id"
@@ -39,49 +36,28 @@ export default {
   data () {
     return{
       email: this.$route.query.email,
-      books: [{id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
-      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
-      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
-      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"},
-      {id:"563782",title:"Hello",author:"Ram",edition:"2nd edi",desc:"hjhsjahd",link:"http://www.google.com",imageLocation:"http://www.google.com"}]
     }
   },
 
   components: {
     DisplayBooks
+  },
+//need to check by Harshall
+  async asyncData () {
+    let payload = {
+      path: '/Netbux_Microservice/netbux/books/getBooks'
+    }
+
+    let response = await axios.get(`http://149.165.170.107:30003${path}`)
+    return {
+      books : response.data
+    }
+  }, 
+  methods : {
+    home:function(){
+      this.$router.push({ name:'books', query: { email: this.email } })
+    }
   }
-// //need to check by Harshall
-//   async asyncData () {
-//     let payload = {
-//       // path: '/NetBoox/UserProfileService'
-//       path: '/Netbux_Microservice/netbux/getbooks'
-//     }
-
-//     let headers = {
-//       headers: {
-//         'Content-type': 'application/json'
-//       }
-//     }
-
-//     let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
-
-//     let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
-
-//     let url
-//     if (!urlData.data.errorFlag) {
-//       url = `http://${urlData.data.host}:${urlData.data.port}/Netbux_Microservice/netbux/getbooks`
-//       console.log("URL: ", url)
-//     }
-//     else {
-//       console.log("Service does not exists")
-//       return
-//     }
-//     // let response = await axios.get('http://js-169-242.jetstream-cloud.org:8080/Netbux_Microservice/netbux/getbooks/')
-//     let response = await axios.get(url)
-//     return {
-//       books : response.data
-//     }
-//   }
  };
 </script>
 

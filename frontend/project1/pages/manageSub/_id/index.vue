@@ -21,19 +21,15 @@
         <div class="header-buttons">
          <button type="button" class="home" @click="home()">Home</button>
          <nuxt-link :to="'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
-         <!-- <nuxt-link :to="'/manageSub/' + email"><button type="button" class="manageSub">Manage Subscription</button></nuxt-link> -->
          <nuxt-link :to="'/'"><button type="button" class="logout">LogOut</button></nuxt-link>
         </div>
     </div>
     <div class="display_details" >
     <h1>Manage Subscription</h1>
-    <label>First Name:</label> <p>{{ user_subscription_data.firstname }}</p>
-    <label>Last Name:</label> <p>{{ user_subscription_data.lastname }}</p>
     <label>User Email:</label> <p>{{user_subscription_data.email}}</p>
-    <label>Phone:</label> <p>{{user_subscription_data.phone}}</p>
-    <label>Subscription Valid:</label> <p>{{user_subscription_data.subscriptionvalid}}</p>
-    <label>Subscription Start_Date:</label> <p>{{user_subscription_data.startDate}}</p>
-    <label>Subscription End_Date:</label> <p>{{user_subscription_data.endDate}}</p>
+    <label>Subscription Valid:</label> <p>{{user_subscription_data.subscriptionValid}}</p>
+    <label>Subscription Start_Date:</label> <p>{{user_subscription_data.subscriptionStartDate}}</p>
+    <label>Subscription End_Date:</label> <p>{{user_subscription_data.subscriptionEndDate}}</p>
     <div>
         <button type="button" class="manageSubCancel" @click="cancelSub(user_subscription_data.email)">Cancel</button>
     </div>
@@ -49,7 +45,6 @@ export default {
     data() {
         return {
             headers: {"Content-type": "application/json"},
-            // url: "http://127.0.0.1:4002/manage_subscription/",
         }
     },
 
@@ -64,9 +59,9 @@ export default {
                 'Content-type': 'application/json'
             }
         }
+        let url
         let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
         let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
-        let url
         if (!urlData.data.errorFlag) {
             url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
         }
@@ -75,10 +70,12 @@ export default {
             return
         }
 
-        // let url = 'http://127.0.0.1:4002/manage_subscription/'
         try {
+            // console.log("context.params.id: ", context.params.id)
             let response = await axios.get(url + `findOneUser/${ context.params.id }`)
+            // console.log("response: ", response)
             let user_subscription_data = response.data
+            // console.log(user_subscription_data)
             return {
                 user_subscription_data
             }
@@ -98,9 +95,9 @@ export default {
                 path: '/NetBoox/SubscriptionService'
             }
 
+            let url
             let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
             let urlData = await axios.post(serviceDiscoveryURL, payload, this.headers)
-            let url
             if (!urlData.data.errorFlag) {
                 url = `http://${urlData.data.host}:${urlData.data.port}/manage_subscription/`
             }

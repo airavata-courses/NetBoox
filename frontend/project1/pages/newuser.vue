@@ -62,9 +62,9 @@ export default {
                               'Content-type': 'application/json'
                         }
                 }
+                let url
                 let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
                 let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
-                let url
                 if (!urlData.data.errorFlag) {
                     url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
                 }
@@ -72,6 +72,7 @@ export default {
                     console.log("Service does not exists")
                     return
                 }
+
                 //need to check by Sagar
                 let data = JSON.stringify(
                 {

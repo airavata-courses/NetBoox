@@ -48,9 +48,9 @@ export default {
             }
         }
 
+        let url
         let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
         let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
-        let url
         if (!urlData.data.errorFlag) {
             url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
         }
@@ -58,9 +58,6 @@ export default {
             console.log("Service does not exists")
             return
         }
-
-        // let url = 'http://localhost:4001/graphql'
-
         let data = JSON.stringify(
             {
                 "query": `{ getUserProfile (email: "${context.params.id}") { id firstName lastName email phone subscriptionValid subscriptionEnds readList errorFlag errorMsg successMsg } }`
@@ -69,7 +66,6 @@ export default {
 
         try {
             let output = await axios.post(url, data, headers)
-            // console.log(JSON.stringify(output))
             var res = output.data.data.getUserProfile[0]
             if (!res.errorFlag){
                 return {
