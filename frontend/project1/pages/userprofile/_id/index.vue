@@ -20,7 +20,7 @@
         <p><label>First Name :</label> {{ firstName }}</p><br/>
         <p><label>Last Name:</label> {{ lastName }}</p><br/>
         <p><label>Phone:</label> {{ phone }}</p><br/>
-        <p><label>Subscription Ends on: </label> {{ convertTimestampToHumanReadableFormat(subscriptionEnds) }}</p><br/>
+        <p><label>Subscription Starts: </label> {{ convertTimestampToHumanReadableFormat(subscriptionEnds) }}</p><br/>
     </div>
     <div v-else>
         <label>Error Msg:</label> <p>{{ errorMsg }}</p>
@@ -108,11 +108,12 @@ export default {
 
     methods:{
         convertTimestampToHumanReadableFormat: function(date) {
-            new Date(date).toLocaleDateString('en-GB', {
+            var formatted_date=new Date(date).toLocaleDateString('en-GB', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
             })
+               return formatted_date
         },
         home:function(){
             this.$router.push({ name:'books', query: { email: this.email } })

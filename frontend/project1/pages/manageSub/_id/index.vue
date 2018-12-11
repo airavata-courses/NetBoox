@@ -28,8 +28,8 @@
     <h1>Manage Subscription</h1>
     <label>User Email:</label> <p>{{user_subscription_data.email}}</p>
     <label>Subscription Valid:</label> <p>{{user_subscription_data.subscriptionValid}}</p>
-    <label>Subscription Start_Date:</label> <p>{{user_subscription_data.subscriptionStartDate}}</p>
-    <label>Subscription End_Date:</label> <p>{{user_subscription_data.subscriptionEndDate}}</p>
+    <label>Subscription Start_Date:</label> <p>{{convertTimestampToHumanReadableFormat(user_subscription_data.subscriptionStartDate)}}</p>
+    <!-- <label>Subscription End_Date:</label> <p>{{convertTimestampToHumanReadableFormat(user_subscription_data.subscriptionEndDate)}}</p> -->
     <div>
         <button type="button" class="manageSubCancel" @click="cancelSub(user_subscription_data.email)">Cancel</button>
     </div>
@@ -118,8 +118,23 @@ export default {
             }
         },
          home:function(){
-            this.$router.push({ name:'books', query: { email: this.email } })
-        }
+             if(user_subscription_data)
+             {
+                 this.$router.push({ name:'books', query: { email: user_subscription_data.email } })
+             }
+             else
+             {
+                 this.$router.push({ name:'books', query: { email: this.email }})
+             }
+        },
+        convertTimestampToHumanReadableFormat: function(date) {
+           var formatted_date= new Date(date).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            })
+            return formatted_date
     }
+ }
 }
 </script>
