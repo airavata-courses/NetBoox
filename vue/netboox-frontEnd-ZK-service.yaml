@@ -3,7 +3,7 @@ kind: Deployment
 # name, app, container name must be in lower case letters only 
 # and will accept '-' or '.' in the name, nothing else then that
 metadata:
-  name: netboox-frontend-zk-deployment
+  name: vue-deployment
 spec:
   replicas: 2
   # selector:
@@ -12,46 +12,33 @@ spec:
   template:
     metadata:
       labels:
-        app: netboox-frontend-zk
+        app: vue-services
     spec:
       containers:
-      - name: netboox-frontend-zk-container
-        image: sspanchal/netboox:frontEnd-ZkSvcImage
+      - name: vue-container
+        image: sspanchal/vue.30000
         imagePullPolicy: Always
         ports:
-        - containerPort: 4007
+        - containerPort: 30000
           name: http
+        nodeSelector:
+          worker: vuejs-worker
 ---
 kind: Service
 apiVersion: v1
 metadata:
   # name, app, container name must be in lower case letters only 
   # and will accept '-' or '.' in the name, nothing else then that
-  name: netboox-frontend-zk-service
+  name: vue-services
   labels:
-    app: netboox-frontend-zk
+    run: vue-services
 spec:
   selector:
-    app: netboox-frontend-zk
+    run: vue-services
   ports:
   - protocol: TCP
-    targetPort: 4007
-    port: 4007
+    targetPort: 30000
+    port: 30000
     name: http
-  type: LoadBalancer
-
-# apiVersion: v1
-# kind: Pod
-# metadata:
-#   name: node-js-service
-#   labels:
-#     app: node-js-service
-# spec:
-#   containers:
-#     - name: node-js-service-container
-#       image: nodeimage .
-#       ports:
-#         - name: http
-#           containerPort: 4001
-#         - name: health
-#           containerPort: 81
+    nodePort: 30000
+  type: NodePort
