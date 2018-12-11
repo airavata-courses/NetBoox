@@ -44,9 +44,7 @@ export default {
   },
 //need to check by Harshall
   async asyncData () {
-    let payload = {
-      path: '/Netbux_Microservice/netbux/books/getBooks'
-    }
+    let path = '/Netbux_Microservice/netbux/books/getBooks'
 
     let response = await axios.get(`http://149.165.170.107:30003${path}`)
     return {

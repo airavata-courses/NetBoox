@@ -13,12 +13,17 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
+    "prestart": "node server.js &",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "node-zookeeper-client": "^0.2.2",
     "axios": "^0.18.0",
     "net": "^1.0.2",
     "nuxt": "^1.0.0"
