@@ -1,6 +1,6 @@
 # Team NetBoox
 
-* Project Link: [Wiki](https://github.com/airavata-courses/distributors/wiki)  
+* Project Link: [Wiki](https://github.com/airavata-courses/NetBoox/wiki/Project-4) 
 
 * Here is the Napkin Diagram of the project:  
 
