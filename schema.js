@@ -10,7 +10,7 @@
  const schema = buildSchema (`
     type Query {
         getUserProfile (id: String, email: String, firstName: String, lastName: String, subscriptionValid: Boolean, 
-            subscriptionEnds: String): [UserProfile] 
+            subscriptionStarts: String): [UserProfile] 
 
         getAllUserProfiles : [UserProfile]
 
@@ -19,10 +19,10 @@
 
     type Mutation {
         updateUserProfile (id: String!, firstName: String, lastName: String, email: String, password: String, phone: String, 
-            subscriptionValid: Boolean, subscriptionEnds: String, readList: [String]): UserProfile
+            subscriptionValid: Boolean, subscriptionStarts: String, readList: [String]): UserProfile
 
         addUserProfile (firstName: String!, lastName: String!, phone: String, email: String!, password: String!,
-            subscriptionValid: Boolean!, subscriptionEnds: String!, readList: [String]): UserProfile
+            subscriptionValid: Boolean!, subscriptionStarts: String!, readList: [String]): UserProfile
     },
 
     type UserProfile {
@@ -33,7 +33,7 @@
         password: String,
         phone: String,
         subscriptionValid: Boolean!,
-        subscriptionEnds: String!,
+        subscriptionStarts: String!,
         readList: [String],
         successMsg: String,
         errorMsg: String,

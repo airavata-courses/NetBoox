@@ -110,7 +110,7 @@ const userProfileSchema = new mongoose.Schema({
     salt: String,
     phone: {type: String, set: toPhoneNumberFormat},
     subscriptionValid: Boolean,
-    subscriptionEnds:{type: Date, set: stringToDate, get: dateToString},
+    subscriptionStarts:{type: Date, set: stringToDate, get: dateToString},
     readList: [{type: ObjectId, set: toObjectId, get: objectIdToString}]
 })
 
