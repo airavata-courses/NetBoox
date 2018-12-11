@@ -1,2 +1,4 @@
-npm prestart
+#!/bin/sh
+
+npm run &
 npm start
