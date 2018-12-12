@@ -94,7 +94,7 @@ export default {
                         lastName: res.lastName,
                         email: res.email,
                         phone: res.phone,
-                        subscriptionEnds: res.subscriptionEnds,
+                        subscriptionStarts: res.subscriptionStarts,
                         readList: res.readList,
                         errorFlag: res.errorFlag
                     }

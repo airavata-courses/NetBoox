@@ -20,7 +20,7 @@
         
         <div class="header-buttons">
          <button type="button" class="home" @click="home()">Home</button>
-         <nuxt-link :to="'/userprofile/' + email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
+         <nuxt-link :to="'/userprofile/' + user_subscription_data.email" ><button type="button" class="userProfile">My Profile</button> </nuxt-link> 
          <nuxt-link :to="'/'"><button type="button" class="logout">LogOut</button></nuxt-link>
         </div>
     </div>

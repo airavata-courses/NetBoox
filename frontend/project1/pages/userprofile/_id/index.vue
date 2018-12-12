@@ -20,7 +20,7 @@
         <p><label>First Name :</label> {{ firstName }}</p><br/>
         <p><label>Last Name:</label> {{ lastName }}</p><br/>
         <p><label>Phone:</label> {{ phone }}</p><br/>
-        <p><label>Subscription Starts: </label> {{ convertTimestampToHumanReadableFormat(subscriptionEnds) }}</p><br/>
+        <p><label>Subscription Starts: </label> {{ convertTimestampToHumanReadableFormat(subscriptionStarts) }}</p><br/>
     </div>
     <div v-else>
         <label>Error Msg:</label> <p>{{ errorMsg }}</p>
@@ -60,7 +60,7 @@ export default {
         }
         let data = JSON.stringify(
             {
-                "query": `{ getUserProfile (email: "${context.params.id}") { id firstName lastName email phone subscriptionValid subscriptionEnds readList errorFlag errorMsg successMsg } }`
+                "query": `{ getUserProfile (email: "${context.params.id}") { id firstName lastName email phone subscriptionValid subscriptionStarts readList errorFlag errorMsg successMsg } }`
             }
         )
 
@@ -74,7 +74,7 @@ export default {
                     lastName: res.lastName,
                     email: res.email,
                     phone: res.phone,
-                    subscriptionEnds: res.subscriptionEnds,
+                    subscriptionStarts: res.subscriptionStarts,
                     readList: res.readList,
                     errorFlag: res.errorFlag
                 }
