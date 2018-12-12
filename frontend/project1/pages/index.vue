@@ -59,18 +59,18 @@ import axios from 'axios';
             }
           }
           
-          // let url
-          // let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
-          // let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
+          let url
+          let serviceDiscoveryURL = 'http://localhost:30006/discoverService'
+          let urlData = await axios.post(serviceDiscoveryURL, payload, headers)
 
-          // if (!urlData.data.errorFlag) {
-          //   url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
-          // }
-          // else {
-          //   console.log("Service does not exists")
-          //   return
-          // }
-          let url = 'http://149.165.170.107:30001/graphql'
+          if (!urlData.data.errorFlag) {
+            url = `http://${urlData.data.host}:${urlData.data.port}/graphql`
+          }
+          else {
+            console.log("Service does not exists")
+            return
+          }
+          
           let query = JSON.stringify(
             {
               "query": `{ verifyLogin (email: "${this.email}", password: "${this.password}" ) { successMsg errorMsg errorFlag } }`
